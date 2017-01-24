@@ -19,26 +19,33 @@ func (bot *Telebot) getMe() (User, error) {
 	return user, err
 }
 
-// sendMessage
-// Use this method to send text messages. On success, the sent Message is returned.
-
-// Parameters	Type	Required	Description
-// chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-// text	String	Yes	Text of the message to be sent
-// parse_mode	String	Optional	Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-// disable_web_page_preview	Boolean	Optional	Disables link previews for links in this message
-// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-// reply_to_message_id	Integer	Optional	If the message is a reply, ID of the original message
-// reply_markup	InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply	Optional	Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+// sendMessage - Use this method to send text messages. On success, the sent Message is returned.
+// Parameters	Type	    Required	Description
+// chat_id	    Integer	    Yes	        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+//              or String
+// text	        String	    Yes	        Text of the message to be sent
+// parse_mode	String	    Optional	Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+// disable_web_page_preview
+//              Boolean	    Optional	Disables link previews for links in this message
+// disable_notification
+//              Boolean	    Optional	Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+// reply_to_message_id
+//              Integer	    Optional	If the message is a reply, ID of the original message
+// reply_markup	            Optional	Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions
+//              InlineKeyboardMarkup or            to remove reply keyboard or to force a reply from the user.
+//              ReplyKeyboardMarkup or
+//              ReplyKeyboardRemove or
+//              ForceReply
+//
 // Formatting options
-// The Bot API supports basic formatting for messages. You can use bold and italic text, as well as inline links and pre-formatted code in your bots' messages. Telegram clients will render them accordingly. You can use either markdown-style or HTML-style formatting.
-
+// The Bot API supports basic formatting for messages. You can use bold and italic text, as well as inline links and pre-formatted code in your bots' messages.
+// Telegram clients will render them accordingly. You can use either markdown-style or HTML-style formatting.
+//
 // Note that Telegram clients will display an alert to the user before opening an inline link (‘Open this link?’ together with the full URL).
-
+//
 // Markdown style
-
 // To use this mode, pass Markdown in the parse_mode field when using sendMessage. Use the following syntax in your message:
-
+//
 // *bold text*
 // _italic text_
 // [text](http://www.example.com/)
@@ -47,34 +54,42 @@ func (bot *Telebot) getMe() (User, error) {
 // pre-formatted fixed-width code block
 // ```
 // HTML style
-
+//
 // To use this mode, pass HTML in the parse_mode field when using sendMessage. The following tags are currently supported:
-
+//
 // <b>bold</b>, <strong>bold</strong>
 // <i>italic</i>, <em>italic</em>
 // <a href="http://www.example.com/">inline URL</a>
 // <code>inline fixed-width code</code>
 // <pre>pre-formatted fixed-width code block</pre>
 // Please note:
-
+//
 // Only the tags mentioned above are currently supported.
 // Tags must not be nested.
 // All <, > and & symbols that are not a part of a tag or an HTML entity must be replaced with the corresponding HTML entities (< with &lt;, > with &gt; and & with &amp;).
 // All numerical HTML entities are supported.
 // The API currently supports only the following named HTML entities: &lt;, &gt;, &amp; and &quot;.
-// forwardMessage
-// Use this method to forward messages of any kind. On success, the sent Message is returned.
+func (bot *Telebot) sendMessage() {
 
-// Parameters	Type	Required	Description
-// chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-// from_chat_id	Integer or String	Yes	Unique identifier for the chat where the original message was sent (or channel username in the format @channelusername)
-// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-// message_id	Integer	Yes	Message identifier in the chat specified in from_chat_id
-// sendPhoto
-// Use this method to send photos. On success, the sent Message is returned.
+}
 
-// Parameters	Type	Required	Description
-// chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+// forwardMessage - Use this method to forward messages of any kind. On success, the sent Message is returned.
+// Parameters	Type	    Required	Description
+// chat_id	    Integer or  Yes     	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+//              String
+// from_chat_id	Integer or  Yes	        Unique identifier for the chat where the original message was sent (or channel username in the format @channelusername)
+//              String
+// disable_notification
+//          	Boolean	    Optional	Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+// message_id	Integer	    Yes	        Message identifier in the chat specified in from_chat_id
+func (bot *Telebot) forwardMessage() {
+
+}
+
+// sendPhoto - Use this method to send photos. On success, the sent Message is returned.
+// Parameters	Type	    Required	Description
+// chat_id	    Integer or  Yes	        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+//              String
 // photo	InputFile or String	Yes	Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. More info on Sending Files »
 // caption	String	Optional	Photo caption (may also be used when resending photos by file_id), 0-200 characters
 // disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
