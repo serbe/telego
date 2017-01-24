@@ -40,8 +40,8 @@ type Animation struct {
 	FileSize int        `json:"file_size"`
 }
 
-// CallbackGame
-// A placeholder, currently holds no information. Use BotFather to set up your game.
+// CallbackGame - A placeholder, currently holds no information. Use BotFather to set up your game.
+type CallbackGame struct{}
 
 // setGameScore
 // Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
@@ -54,6 +54,7 @@ type Animation struct {
 // chat_id	Integer	Optional	Required if inline_message_id is not specified. Unique identifier for the target chat
 // message_id	Integer	Optional	Required if inline_message_id is not specified. Identifier of the sent message
 // inline_message_id	String	Optional	Required if chat_id and message_id are not specified. Identifier of the inline message
+
 // getGameHighScores
 // Use this method to get data for high score tables. Will return the score of the specified user and several of his neighbors in a game. On success, returns an Array of GameHighScore objects.
 
