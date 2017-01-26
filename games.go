@@ -18,9 +18,10 @@ package telego
 // text_entities	Array of MessageEntity	Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
 // animation	Animation	Optional. Animation that will be displayed in the game message in chats. Upload via BotFather
 type Game struct {
-	Title        string           `json:"title"`
-	Description  string           `json:"description"`
-	Photo        *[]PhotoSize     `json:"photo"`
+	Title       string       `json:"title"`
+	Description string       `json:"description"`
+	Photo       *[]PhotoSize `json:"photo"`
+	// Optional
 	Text         string           `json:"text"`
 	TextEntities *[]MessageEntity `json:"text_entities"`
 	Animation    *Animation       `json:"animation"`
@@ -33,7 +34,8 @@ type Game struct {
 // mime_type	String	Optional. MIME type of the file as defined by sender
 // file_size	Integer	Optional. File size
 type Animation struct {
-	FileID   string     `json:"file_id"`
+	FileID string `json:"file_id"`
+	// Optional
 	Thumb    *PhotoSize `json:"thumb"`
 	FileName string     `json:"file_name"`
 	MimeType string     `json:"mime_type"`
