@@ -1,6 +1,7 @@
 package telego
 
 // User - This object represents a Telegram user or bot.
+//
 // id	        Integer	Unique identifier for this user or bot
 // first_name	String	User‘s or bot’s first name
 // last_name	String	Optional. User‘s or bot’s last name
@@ -8,12 +9,12 @@ package telego
 type User struct {
 	ID        int    `json:"id"`
 	FirstName string `json:"first_name"`
-	// Optional
-	LastName string `json:"last_name"`
-	UserName string `json:"username"`
+	LastName  string `json:"last_name, omitempty"`
+	UserName  string `json:"username, omitempty"`
 }
 
 // Chat - This object represents a chat.
+//
 // id	            Integer	Unique identifier for this chat. This number may be greater than 32 bits
 //                          and some programming languages may have difficulty/silent defects in
 //							interpreting it. But it smaller than 52 bits, so a signed 64 bit integer
@@ -23,21 +24,22 @@ type User struct {
 // username	        String	Optional. Username, for private chats, supergroups and channels if available
 // first_name	    String	Optional. First name of the other party in a private chat
 // last_name	    String	Optional. Last name of the other party in a private chat
-// all_members_are_administrators	Boolean	Optional. True if a group has ‘All Members Are Admins’ enabled.
+// all_members_are_administrators
+//					Boolean	Optional. True if a group has ‘All Members Are Admins’ enabled.
 type Chat struct {
-	ID   int    `json:"id"`
-	Type string `json:"type"`
-	// Optional
-	Title                       string `json:"title"`
-	UserName                    string `json:"username"`
-	FirstName                   string `json:"first_name"`
-	LastName                    string `json:"last_name"`
-	AllMembersAreAdministrators bool   `json:"all_members_are_administrators"`
+	ID                          int    `json:"id"`
+	Type                        string `json:"type"`
+	Title                       string `json:"title, omitempty"`
+	UserName                    string `json:"username, omitempty"`
+	FirstName                   string `json:"first_name, omitempty"`
+	LastName                    string `json:"last_name, omitempty"`
+	AllMembersAreAdministrators bool   `json:"all_members_are_administrators, omitempty"`
 }
 
 // Message - This object represents a message.
+//
 // message_id	    Integer	Unique message identifier inside this chat
-// from	User	    Optional. Sender, can be empty for messages sent to channels
+// from				User	Optional. Sender, can be empty for messages sent to channels
 // date	            Integer	Date the message was sent in Unix time
 // chat	            Chat	Conversation the message belongs to
 // forward_from	    User	Optional. For forwarded messages, sender of the original message
@@ -51,26 +53,30 @@ type Chat struct {
 // reply_to_message	Message	Optional. For replies, the original message. Note that the Message object in
 //							this field will not contain further reply_to_message fields even if it itself is a reply.
 // edit_date	    Integer	Optional. Date the message was last edited in Unix time
-// text	String	    Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters.
-// entities	        Array of MessageEntity	Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
+// text				String	Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters.
+// entities	      Array of 	Optional. For text messages, special entities like usernames, URLs, bot commands, etc.
+//           MessageEntity	that appear in the text
 // audio	        Audio	Optional. Message is an audio file, information about the file
-// document	        Document	Optional. Message is a general file, information about the file
+// document	       Document	Optional. Message is a general file, information about the file
 // game	            Game	Optional. Message is a game, information about the game. More about games »
-// photo	        Array of PhotoSize	Optional. Message is a photo, available sizes of the photo
+// photo	      Array of 	Optional. Message is a photo, available sizes of the photo
+//				  PhotoSize
 // sticker	        Sticker	Optional. Message is a sticker, information about the sticker
 // video	        Video	Optional. Message is a video, information about the video
 // voice	        Voice	Optional. Message is a voice message, information about the file
 // caption	        String	Optional. Caption for the document, photo or video, 0-200 characters
 // contact	        Contact	Optional. Message is a shared contact, information about the contact
-// location	        Location	Optional. Message is a shared location, information about the location
+// location	       Location	Optional. Message is a shared location, information about the location
 // venue	        Venue	Optional. Message is a venue, information about the venue
 // new_chat_member	User	Optional. A new member was added to the group, information about them (this member may be the bot itself)
 // left_chat_member	User	Optional. A member was removed from the group, information about them (this member may be the bot itself)
 // new_chat_title	String	Optional. A chat title was changed to this value
-// new_chat_photo	Array of PhotoSize	Optional. A chat photo was change to this value
-// delete_chat_photo	True	Optional. Service message: the chat photo was deleted
-// group_chat_created	True	Optional. Service message: the group has been created
-// supergroup_chat_created	True	Optional. Service message: the supergroup has been created. This field can‘t be received in a message coming through updates,
+// new_chat_photo Array of	Optional. A chat photo was change to this value
+//				 PhotoSize
+// delete_chat_photo True	Optional. Service message: the chat photo was deleted
+// group_chat_created True	Optional. Service message: the group has been created
+// supergroup_chat_created
+//					True	Optional. Service message: the supergroup has been created. This field can‘t be received in a message coming through updates,
 //                          because bot can’t be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very
 //                          first message in a directly created supergroup.
 // channel_chat_created	True	Optional. Service message: the channel has been created. This field can‘t be received in a message coming through updates, because
@@ -84,45 +90,47 @@ type Chat struct {
 // pinned_message	Message	Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even
 //                          if it is itself a reply.
 type Message struct {
-	MessageID int   `json:"message_id"`
-	Date      int   `json:"date"`
-	Chat      *Chat `json:"chat"`
-	// Optional
-	From                  *User            `json:"from"`
-	ForwardFrom           *User            `json:"forward_from"`
-	ForwardFromChat       *Chat            `json:"forward_from_chat"`
-	ForwardFromMessageID  int              `json:"forward_from_message_id"`
-	ForwardDate           int              `json:"forward_date"`
-	ReplyToMessage        *Message         `json:"reply_to_message"`
-	EditDate              int              `json:"edit_date"`
-	Text                  string           `json:"text"`
-	Entities              *[]MessageEntity `json:"entities"`
-	Audio                 *Audio           `json:"audio"`
-	Document              *Document        `json:"document"`
-	Game                  *Game            `json:"game"`
-	Photo                 *[]PhotoSize     `json:"photo"`
-	Sticker               *Sticker         `json:"sticker"`
-	Video                 *Video           `json:"video"`
-	Voice                 *Voice           `json:"voice"`
-	Caption               string           `json:"caption"`
-	Contact               *Contact         `json:"contact"`
-	Location              *Location        `json:"location"`
-	Venue                 *Venue           `json:"venue"`
-	NewChatMember         *User            `json:"new_chat_member"`
-	LeftChatMember        *User            `json:"left_chat_member"`
-	NewChatTitle          string           `json:"new_chat_title"`
-	NewChatPhoto          *[]PhotoSize     `json:"new_chat_photo"`
-	DeleteChatPhoto       bool             `json:"delete_chat_photo,omitempty"`
-	GroupChatCreated      bool             `json:"group_chat_created,omitempty"`
-	SupergroupChatCreated bool             `json:"supergroup_chat_created,omitempty"`
-	ChannelChatCreated    bool             `json:"channel_chat_created,omitempty"`
-	MigrateToChatID       int              `json:"migrate_to_chat_id"`
-	MigrateFromChatID     int              `json:"migrate_from_chat_id"`
-	PinnedMessage         *Message         `json:"pinned_message"`
+	MessageID             int              `json:"message_id"`
+	Date                  int              `json:"date"`
+	Chat                  *Chat            `json:"chat"`
+	From                  *User            `json:"from, omitempty"`
+	ForwardFrom           *User            `json:"forward_from, omitempty"`
+	ForwardFromChat       *Chat            `json:"forward_from_chat, omitempty"`
+	ForwardFromMessageID  int              `json:"forward_from_message_id, omitempty"`
+	ForwardDate           int              `json:"forward_date, omitempty"`
+	ReplyToMessage        *Message         `json:"reply_to_message, omitempty"`
+	EditDate              int              `json:"edit_date, omitempty"`
+	Text                  string           `json:"text, omitempty"`
+	Entities              []*MessageEntity `json:"entities, omitempty"`
+	Audio                 *Audio           `json:"audio, omitempty"`
+	Document              *Document        `json:"document, omitempty"`
+	Game                  *Game            `json:"game, omitempty"`
+	Photo                 []*PhotoSize     `json:"photo, omitempty"`
+	Sticker               *Sticker         `json:"sticker, omitempty"`
+	Video                 *Video           `json:"video, omitempty"`
+	Voice                 *Voice           `json:"voice, omitempty"`
+	Caption               string           `json:"caption, omitempty"`
+	Contact               *Contact         `json:"contact, omitempty"`
+	Location              *Location        `json:"location, omitempty"`
+	Venue                 *Venue           `json:"venue, omitempty"`
+	NewChatMember         *User            `json:"new_chat_member, omitempty"`
+	LeftChatMember        *User            `json:"left_chat_member, omitempty"`
+	NewChatTitle          string           `json:"new_chat_title, omitempty"`
+	NewChatPhoto          []*PhotoSize     `json:"new_chat_photo, omitempty"`
+	DeleteChatPhoto       bool             `json:"delete_chat_photo, omitempty"`
+	GroupChatCreated      bool             `json:"group_chat_created, omitempty"`
+	SupergroupChatCreated bool             `json:"supergroup_chat_created, omitempty"`
+	ChannelChatCreated    bool             `json:"channel_chat_created, omitempty"`
+	MigrateToChatID       int              `json:"migrate_to_chat_id, omitempty"`
+	MigrateFromChatID     int              `json:"migrate_from_chat_id, omitempty"`
+	PinnedMessage         *Message         `json:"pinned_message, omitempty"`
 }
 
 // MessageEntity - This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
-// type	    String	Type of the entity. Can be mention (@username), hashtag, bot_command, url, email, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
+//
+// type	    String	Type of the entity. Can be mention (@username), hashtag, bot_command, url, email, bold (bold
+//					text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for
+//					clickable text URLs), text_mention (for users without usernames)
 // offset	Integer	Offset in UTF-16 code units to the start of the entity
 // length	Integer	Length of the entity in UTF-16 code units
 // url	    String	Optional. For “text_link” only, url that will be opened after user taps on the text
@@ -131,9 +139,8 @@ type MessageEntity struct {
 	Type   string `json:"type"`
 	Offset int    `json:"offset"`
 	Length int    `json:"length"`
-	// Optional
-	URL  string `json:"url"`
-	User *User  `json:"user"`
+	URL    string `json:"url, omitempty"`
+	User   *User  `json:"user, omitempty"`
 }
 
 // PhotoSize - This object represents one size of a photo or a file / sticker thumbnail.
@@ -142,11 +149,10 @@ type MessageEntity struct {
 // height	    Integer	Photo height
 // file_size	Integer	Optional. File size
 type PhotoSize struct {
-	FileID string `json:"file_id"`
-	Width  int    `json:"width"`
-	Height int    `json:"height"`
-	// Optional
-	FileSize int `json:"file_size"`
+	FileID   string `json:"file_id"`
+	Width    int    `json:"width"`
+	Height   int    `json:"height"`
+	FileSize int    `json:"file_size, omitempty"`
 }
 
 // Audio - This object represents an audio file to be treated as music by the Telegram clients.
@@ -157,13 +163,12 @@ type PhotoSize struct {
 // mime_type	String	Optional. MIME type of the file as defined by sender
 // file_size	Integer	Optional. File size
 type Audio struct {
-	FileID   string `json:"file_id"`
-	Duration int    `json:"duration"`
-	// Optional
-	Performer string `json:"performer"`
-	Title     string `json:"title"`
-	MimeType  string `json:"mime_type"`
-	FileSize  int    `json:"file_size"`
+	FileID    string `json:"file_id"`
+	Duration  int    `json:"duration"`
+	Performer string `json:"performer, omitempty"`
+	Title     string `json:"title, omitempty"`
+	MimeType  string `json:"mime_type, omitempty"`
+	FileSize  int    `json:"file_size, omitempty"`
 }
 
 // Document - This object represents a general file (as opposed to photos, voice messages and audio files).
@@ -173,12 +178,11 @@ type Audio struct {
 // mime_type	String		Optional. MIME type of the file as defined by sender
 // file_size	Integer		Optional. File size
 type Document struct {
-	FileID string `json:"file_id"`
-	// Optional
-	Thumb    *PhotoSize `json:"thumb"`
-	FileName string     `json:"file_name"`
-	MimeType string     `json:"mime_type"`
-	FileSize int        `json:"file_size"`
+	FileID   string     `json:"file_id"`
+	Thumb    *PhotoSize `json:"thumb, omitempty"`
+	FileName string     `json:"file_name, omitempty"`
+	MimeType string     `json:"mime_type, omitempty"`
+	FileSize int        `json:"file_size, omitempty"`
 }
 
 // Sticker - This object represents a sticker.
@@ -189,13 +193,12 @@ type Document struct {
 // emoji	    String		Optional. Emoji associated with the sticker
 // file_size	Integer		Optional. File size
 type Sticker struct {
-	FileID string `json:"file_id"`
-	Width  int    `json:"width"`
-	Height int    `json:"height"`
-	// Optional
-	Thumb    *PhotoSize `json:"thumb"`
-	Emoji    string     `json:"emoji"`
-	FileSize int        `json:"file_size"`
+	FileID   string     `json:"file_id"`
+	Width    int        `json:"width"`
+	Height   int        `json:"height"`
+	Thumb    *PhotoSize `json:"thumb, omitempty"`
+	Emoji    string     `json:"emoji, omitempty"`
+	FileSize int        `json:"file_size, omitempty"`
 }
 
 // Video - This object represents a video file.
@@ -207,14 +210,13 @@ type Sticker struct {
 // mime_type	String		Optional. Mime type of a file as defined by sender
 // file_size	Integer		Optional. File size
 type Video struct {
-	FileID   string `json:"file_id"`
-	Width    int    `json:"width"`
-	Height   int    `json:"height"`
-	Duration int    `json:"duration"`
-	// Optional
-	Thumb    *PhotoSize `json:"thumb"`
-	MimeType string     `json:"mime_type"`
-	FileSize int        `json:"file_size"`
+	FileID   string     `json:"file_id"`
+	Width    int        `json:"width"`
+	Height   int        `json:"height"`
+	Duration int        `json:"duration"`
+	Thumb    *PhotoSize `json:"thumb, omitempty"`
+	MimeType string     `json:"mime_type, omitempty"`
+	FileSize int        `json:"file_size, omitempty"`
 }
 
 // Voice - This object represents a voice note.
@@ -225,9 +227,8 @@ type Video struct {
 type Voice struct {
 	FileID   string `json:"file_id"`
 	Duration int    `json:"duration"`
-	// Optional
-	MimeType string `json:"mime_type"`
-	FileSize int    `json:"file_size"`
+	MimeType string `json:"mime_type, omitempty"`
+	FileSize int    `json:"file_size, omitempty"`
 }
 
 // Contact - This object represents a phone contact.
@@ -238,9 +239,8 @@ type Voice struct {
 type Contact struct {
 	PhoneNumber string `json:"phone_number"`
 	FirstName   string `json:"first_name"`
-	// Optional
-	LastName string `json:"last_name"`
-	UserID   int    `json:"user_id"`
+	LastName    string `json:"last_name, omitempty"`
+	UserID      int    `json:"user_id, omitempty"`
 }
 
 // Location - This object represents a point on the map.
@@ -252,24 +252,25 @@ type Location struct {
 }
 
 // Venue - This object represents a venue.
+//
 // location	        Location	Venue location
 // title	        String	    Name of the venue
 // address	        String	    Address of the venue
 // foursquare_id	String	    Optional. Foursquare identifier of the venue
 type Venue struct {
-	Location *Location `json:"location"`
-	Title    string    `json:"title"`
-	Address  string    `json:"address"`
-	// Optional
-	FoursquareID string `json:"foursquare_id"`
+	Location     *Location `json:"location"`
+	Title        string    `json:"title"`
+	Address      string    `json:"address"`
+	FoursquareID string    `json:"foursquare_id, omitempty"`
 }
 
 // UserProfilePhotos - This object represent a user's profile pictures.
+//
 // total_count	Integer						Total number of profile pictures the target user has
 // photos		Array of Array of PhotoSize	Requested profile pictures (in up to 4 sizes each)
 type UserProfilePhotos struct {
 	TotalCount int            `json:"total_count"`
-	Photos     *[][]PhotoSize `json:"photos"`
+	Photos     [][]*PhotoSize `json:"photos"`
 }
 
 // File - This object represents a file ready to be downloaded. The file can be downloaded via the
@@ -277,19 +278,20 @@ type UserProfilePhotos struct {
 // will be valid for at least 1 hour. When the link expires, a new one can be requested by
 // calling getFile.
 // Maximum file size to download is 20 MB
+//
 // file_id		String	Unique identifier for this file
 // file_size	Integer	Optional. File size, if known
 // file_path	String	Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path>
 //						to get the file.
 type File struct {
-	FileID string `json:"file_id"`
-	// Optional
-	FileSize int    `json:"file_size"`
-	FilePath string `json:"file_path"`
+	FileID   string `json:"file_id"`
+	FileSize int    `json:"file_size, omitempty"`
+	FilePath string `json:"file_path, omitempty"`
 }
 
 // ReplyKeyboardMarkup - This object represents a custom keyboard with reply options
 // (see Introduction to bots for details and examples).
+//
 // keyboard				Array of Array 		Array of button rows, each represented by an Array
 //                 		of KeyboardButton	of KeyboardButton objects
 // resize_keyboard		Boolean				Optional. Requests clients to resize the keyboard vertically
@@ -309,16 +311,16 @@ type File struct {
 // Example: A user requests to change the bot‘s language, bot replies to the request with a keyboard to
 // select the new language. Other users in the group don’t see the keyboard.
 type ReplyKeyboardMarkup struct {
-	Keyboard *[][]KeyboardButton `json:"keyboard"`
-	// Optional
-	ResizeKeyboard  bool `json:"resize_keyboard"`
-	OneTimeKeyboard bool `json:"one_time_keyboard"`
-	Selective       bool `json:"selective"`
+	Keyboard        [][]*KeyboardButton `json:"keyboard"`
+	ResizeKeyboard  bool                `json:"resize_keyboard, omitempty"`
+	OneTimeKeyboard bool                `json:"one_time_keyboard, omitempty"`
+	Selective       bool                `json:"selective, omitempty"`
 }
 
 // KeyboardButton - This object represents one button of the reply keyboard.
 // For simple text buttons String can be used instead of this object to specify
 // text of the button. Optional fields are mutually exclusive.
+//
 // text				String	Text of the button. If none of the optional fields are used, it will be sent
 //							to the bot as a message when the button is pressed
 // request_contact	Boolean	Optional. If True, the user's phone number will be sent as a contact when the
@@ -328,16 +330,16 @@ type ReplyKeyboardMarkup struct {
 // Note: request_contact and request_location options will only work in Telegram versions released after
 // 9 April, 2016. Older clients will ignore them.
 type KeyboardButton struct {
-	Text string `json:"text"`
-	// Optional
-	RequestContact  bool `json:"request_contact"`
-	RequestLocation bool `json:"request_location"`
+	Text            string `json:"text"`
+	RequestContact  bool   `json:"request_contact, omitempty"`
+	RequestLocation bool   `json:"request_location, omitempty"`
 }
 
 // ReplyKeyboardRemove - Upon receiving a message with this object, Telegram clients will remove the
 // current custom keyboard and display the default letter-keyboard. By default, custom keyboards are
 // displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that
 // are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
+//
 // remove_keyboard	True	Requests clients to remove the custom keyboard (user will not be able to
 //							summon this keyboard; if you want to hide the keyboard from sight but keep
 //							it accessible, use one_time_keyboard in ReplyKeyboardMarkup)
@@ -348,23 +350,24 @@ type KeyboardButton struct {
 // Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the
 // keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
 type ReplyKeyboardRemove struct {
-	RemoveKeyboard bool `json:"remove_keyboard,omitempty"`
-	// Optional
-	Selective bool `json:"selective"`
+	RemoveKeyboard bool `json:"remove_keyboard"`
+	Selective      bool `json:"selective, omitempty"`
 }
 
 // InlineKeyboardMarkup - This object represents an inline keyboard that appears right next to the message
 // it belongs to.
+//
 // inline_keyboard	Array of Array of InlineKeyboardButton	Array of button rows, each represented by an
 //															Array of InlineKeyboardButton objects
 // Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will display
 // unsupported message.
 type InlineKeyboardMarkup struct {
-	InlineKeyboard *[][]InlineKeyboardButton `json:"inline_keyboard"`
+	InlineKeyboard [][]*InlineKeyboardButton `json:"inline_keyboard"`
 }
 
 // InlineKeyboardButton  - This object represents one button of an inline keyboard. You must use exactly
 // one of the optional fields.
+//
 // text					String	Label text on the button
 // url					String	Optional. HTTP url to be opened when button is pressed
 // callback_data		String	Optional. Data to be sent in a callback query to the bot when button is
@@ -384,13 +387,12 @@ type InlineKeyboardMarkup struct {
 //								presses the button.
 // NOTE: This type of button must always be the first button in the first row.
 type InlineKeyboardButton struct {
-	Text string `json:"text"`
-	// Optional
-	URL                          string        `json:"url"`
-	CallbackData                 string        `json:"callback_data"`
-	SwitchInlineQuery            string        `json:"switch_inline_query"`
-	WwitchInlineQueryCurrentChat string        `json:"switch_inline_query_current_chat"`
-	CallbackGame                 *CallbackGame `json:"callback_game"`
+	Text                         string        `json:"text"`
+	URL                          string        `json:"url, omitempty"`
+	CallbackData                 string        `json:"callback_data, omitempty"`
+	SwitchInlineQuery            string        `json:"switch_inline_query, omitempty"`
+	WwitchInlineQueryCurrentChat string        `json:"switch_inline_query_current_chat, omitempty"`
+	CallbackGame                 *CallbackGame `json:"callback_game, omitempty"`
 }
 
 // CallbackQuery - This object represents an incoming callback query from a callback button in an inline
@@ -398,6 +400,7 @@ type InlineKeyboardButton struct {
 // message will be present. If the button was attached to a message sent via the bot (in inline mode), the
 // field inline_message_id will be present. Exactly one of the fields data or game_short_name will be
 // present.
+//
 // id					String	Unique identifier for this query
 // from					User	Sender
 // message				Message	Optional. Message with the callback button that originated the query.
@@ -415,20 +418,20 @@ type InlineKeyboardButton struct {
 // you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even
 // if no notification to the user is needed (e.g., without specifying any of the optional parameters).
 type CallbackQuery struct {
-	ID   string `json:"id"`
-	From User   `json:"from"`
-	// Optional
-	Message         Message `json:"message"`
-	InlineMessageID string  `json:"inline_message_id"`
-	ChatInstance    string  `json:"chat_instance"`
-	Data            string  `json:"data"`
-	GameShortName   string  `json:"game_short_name"`
+	ID              string   `json:"id"`
+	From            *User    `json:"from"`
+	Message         *Message `json:"message, omitempty"`
+	InlineMessageID string   `json:"inline_message_id, omitempty"`
+	ChatInstance    string   `json:"chat_instance, omitempty"`
+	Data            string   `json:"data, omitempty"`
+	GameShortName   string   `json:"game_short_name, omitempty"`
 }
 
 // ForceReply - Upon receiving a message with this object, Telegram clients will display a reply
 // interface to the user (act as if the user has selected the bot‘s message and tapped ’Reply'). This
 // can be extremely useful if you want to create user-friendly step-by-step interfaces without having to
 // sacrifice privacy mode.
+//
 // force_reply	True	Shows reply interface to the user, as if they manually selected the bot‘s message
 //						and tapped ’Reply'
 // selective	Boolean	Optional. Use this parameter if you want to force reply from specific users only.
@@ -445,21 +448,22 @@ type CallbackQuery struct {
 // will receive the user’s answers even if it only receives replies, commands and mentions — without any
 // extra work for the user.
 type ForceReply struct {
-	ForceReply bool `json:"force_reply,omitempty"`
-	// Optional
-	Selective bool `json:"selective"`
+	ForceReply bool `json:"force_reply, omitempty"`
+	Selective  bool `json:"selective, omitempty"`
 }
 
 // ChatMember - This object contains information about one member of the chat.
+//
 // user	    User	Information about the user
 // status	String	The member's status in the chat. Can be “creator”, “administrator”, “member”, “left”
 // 					or “kicked”
 type ChatMember struct {
-	User   User   `json:"user"`
+	User   *User  `json:"user"`
 	Status string `json:"status"`
 }
 
 // ResponseParameters - Contains information about why a request was unsuccessfull.
+//
 // migrate_to_chat_id	Integer	Optional. The group has been migrated to a supergroup with the specified
 //								identifier. This number may be greater than 32 bits and some programming
 //								languages may have difficulty/silent defects in interpreting it. But it
@@ -468,7 +472,6 @@ type ChatMember struct {
 // retry_after	        Integer	Optional. In case of exceeding flood control, the number of seconds left
 //								to wait before the request can be repeated
 type ResponseParameters struct {
-	// Optional
-	MigrateToChatID int `json:"migrate_to_chat_id"`
-	RetryAfter      int `json:"retry_after"`
+	MigrateToChatID int `json:"migrate_to_chat_id, omitempty"`
+	RetryAfter      int `json:"retry_after, omitempty"`
 }

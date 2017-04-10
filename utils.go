@@ -3,7 +3,6 @@ package telego
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,7 +10,7 @@ import (
 )
 
 func (bot *Telebot) createResponse(method string, values url.Values) (Response, error) {
-	fullURL := fmt.Sprintf(urlAPI, bot.Token, method)
+	fullURL := urlAPI + bot.Token + "/" + method
 	resp, err := bot.Client.PostForm(fullURL, values)
 	if err != nil {
 		errLog("bot.Client.PostForm", err)
@@ -32,7 +31,7 @@ func (bot *Telebot) createResponse(method string, values url.Values) (Response, 
 		return Response{}, err
 	}
 
-	debugLog(fmt.Sprintln(method, string(body)))
+	debugLog("debugLog " + method + " " + string(body))
 
 	var response Response
 

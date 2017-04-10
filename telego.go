@@ -2,7 +2,7 @@ package telego
 
 import "net/http"
 
-const urlAPI = "https://api.telegram.org/bot%s/%s"
+const urlAPI = "https://api.telegram.org/bot"
 
 var (
 	botDebugLog bool
@@ -13,10 +13,11 @@ var (
 type Telebot struct {
 	Token  string
 	Client *http.Client
-	Self   User
+	Self   *User
 }
 
-func newBot(token string, debugLog bool, errorLog bool) (*Telebot, error) {
+// NewBot - create new bot
+func NewBot(token string, debugLog bool, errorLog bool) (*Telebot, error) {
 	botDebugLog = debugLog
 	botErrorLog = errorLog
 
@@ -30,7 +31,7 @@ func newBot(token string, debugLog bool, errorLog bool) (*Telebot, error) {
 		return &Telebot{}, err
 	}
 
-	bot.Self = user
+	bot.Self = &user
 
 	return bot, nil
 }
