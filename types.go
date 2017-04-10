@@ -85,10 +85,10 @@ type Chat struct {
 //                          if it is itself a reply.
 type Message struct {
 	MessageID int   `json:"message_id"`
-	From      *User `json:"from"`
 	Date      int   `json:"date"`
 	Chat      *Chat `json:"chat"`
 	// Optional
+	From                  *User            `json:"from"`
 	ForwardFrom           *User            `json:"forward_from"`
 	ForwardFromChat       *Chat            `json:"forward_from_chat"`
 	ForwardFromMessageID  int              `json:"forward_from_message_id"`
