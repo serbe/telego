@@ -1,6 +1,7 @@
 package telego
 
-type sendMessageOpts struct {
+// SendMessageOpts - options for SendMessage
+type SendMessageOpts struct {
 	ChatID                string `json:"chat_id"`
 	Text                  string `json:"text"`
 	ParseMode             string `json:"parse_mode, omitempty"`
@@ -15,14 +16,16 @@ type sendMessageOpts struct {
 	//              ForceReply
 }
 
-type forwardMessageOpts struct {
+// ForwardMessageOpts - options forForwardMessage
+type ForwardMessageOpts struct {
 	ChatID              string `json:"chat_id"`
 	FromChatID          string `json:"from_chat_id"`
 	DisableNotification bool   `json:"disable_motification"`
 	MessageID           int    `json:"message_id"`
 }
 
-type sendPhotoOpts struct {
+// SendPhotoOpts - options for SendPhoto
+type SendPhotoOpts struct {
 	ChatID              string `json:"chat_id"`
 	Photo               string `json:"photo"`
 	Caption             string `json:"caption, omitempty"`
@@ -33,4 +36,12 @@ type sendPhotoOpts struct {
 	//				ReplyKeyboardMarkup or  or to force a reply from the user.
 	//				ReplyKeyboardRemove or
 	//				ForceReply
+}
+
+// GetUpdatesOpt - options for GetUpdates
+type GetUpdatesOpt struct {
+	Offset         int      `json:"offset, omitempty"`
+	Limit          int      `json:"limit, omitempty"`
+	Timeout        int      `json:"timeout, omitempty"`
+	AllowedUpdates []string `json:"allowed_updates, omitempty"`
 }

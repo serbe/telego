@@ -9,6 +9,12 @@ import (
 	"net/url"
 )
 
+// Errors
+var (
+	ErrMissingParam  = errors.New("Missing param")
+	ErrForbiddenHTTP = errors.New("Forbidden http")
+)
+
 func (bot *Telebot) createResponse(method string, values url.Values) (Response, error) {
 	fullURL := urlAPI + bot.Token + "/" + method
 	resp, err := bot.Client.PostForm(fullURL, values)
@@ -20,7 +26,7 @@ func (bot *Telebot) createResponse(method string, values url.Values) (Response, 
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusForbidden {
-		err = errors.New("forbidden")
+		err = ErrForbiddenHTTP
 		errLog("http.StatusForbidden", err)
 		return Response{}, err
 	}

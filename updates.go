@@ -61,23 +61,23 @@ type Update struct {
 // Notes
 // 1. This method will not work if an outgoing webhook is set up.
 // 2. In order to avoid getting duplicate updates, recalculate offset after each server response.
-func (t *Telebot) GetUpdates(offset int, limit int, timeout int, allowedUpdates []string) ([]Update, error) {
+func (t *Telebot) GetUpdates(opt *GetUpdatesOpt) ([]Update, error) {
 	values := url.Values{}
-	if offset != 0 {
-		values.Set("offset", strconv.Itoa(offset))
+	if opt.Offset != 0 {
+		values.Set("offset", strconv.Itoa(opt.Offset))
 	}
-	if limit > 0 && limit < 101 {
-		values.Set("limit", strconv.Itoa(limit))
+	if opt.Limit > 0 && opt.Limit < 101 {
+		values.Set("limit", strconv.Itoa(opt.Limit))
 	} else {
 		values.Set("limit", "100")
 	}
-	if timeout > 0 {
-		values.Set("timeout", strconv.Itoa(timeout))
+	if opt.Timeout > 0 {
+		values.Set("timeout", strconv.Itoa(opt.Timeout))
 	} else {
 		values.Set("timeout", "0")
 	}
-	if len(allowedUpdates) > 0 {
-		values["allowed_updates"] = allowedUpdates
+	if len(opt.AllowedUpdates) > 0 {
+		values["allowed_updates"] = opt.AllowedUpdates
 	}
 	r, err := t.createResponse("getUpdates", values)
 	if err != nil {
