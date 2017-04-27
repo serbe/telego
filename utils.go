@@ -57,3 +57,13 @@ func debugLog(s string) {
 		log.Println(s)
 	}
 }
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	defer r.Body.Close()
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		errLog("rootHandler ReadAll", err)
+		return
+	}
+	log.Println(string(body))
+}

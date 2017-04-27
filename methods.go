@@ -76,22 +76,24 @@ func (bot *Telebot) getMe() (User, error) {
 // All <, > and & symbols that are not a part of a tag or an HTML entity must be replaced with the corresponding HTML entities (< with &lt;, > with &gt; and & with &amp;).
 // All numerical HTML entities are supported.
 // The API currently supports only the following named HTML entities: &lt;, &gt;, &amp; and &quot;.
-func (bot *Telebot) SendMessage(chatID string, text string, parseMode string, disableWebPagePreview bool,
-	disableNotification bool, replyToMessageID int) (Message, error) {
+func (bot *Telebot) SendMessage(opt *sendMessageOpts) (Message, error) {
 	values := url.Values{}
-	values.Set("chat_id", chatID)
-	values.Set("text", text)
-	if len(parseMode) > 0 {
-		values.Set("parse_mode", parseMode)
+	if opt.ChatID == "" || opt.Text == "" {
+		return Message{}, errMissingParam
 	}
-	if disableWebPagePreview {
+	values.Set("chat_id", opt.ChatID)
+	values.Set("text", opt.Text)
+	if len(opt.ParseMode) > 0 {
+		values.Set("parse_mode", opt.ParseMode)
+	}
+	if opt.DisableWebPagePreview {
 		values.Set("disable_web_page_preview", "true")
 	}
-	if disableNotification {
+	if opt.DisableNotification {
 		values.Set("disable_notification", "true")
 	}
-	if replyToMessageID > 0 {
-		values.Set("reply_to_message_id", strconv.Itoa(replyToMessageID))
+	if opt.ReplyToMessageID > 0 {
+		values.Set("reply_to_message_id", strconv.Itoa(opt.ReplyToMessageID))
 	}
 	r, err := bot.createResponse("sendMessage", values)
 	if err != nil {
@@ -117,16 +119,17 @@ func (bot *Telebot) SendMessage(chatID string, text string, parseMode string, di
 //          	Boolean	    Optional	Sends the message silently. iOS users will not receive a notification,
 //										Android users will receive a notification with no sound.
 // message_id	Integer	    Yes	        Message identifier in the chat specified in from_chat_id
-func (bot *Telebot) ForwardMessage(chatID string, fromChatID string, disableNotification bool, messageID int) (Message, error) {
+func (bot *Telebot) ForwardMessage(opt *forwardMessageOpts) (Message, error) {
 	values := url.Values{}
-	values.Set("chat_id", chatID)
-	values.Set("from_chat_id", fromChatID)
-	if disableNotification {
+	if opt.ChatID == "" || opt.FromChatID == "" || opt.MessageID == 0 {
+		return Message{}, errMissingParam
+	}
+	values.Set("chat_id", opt.ChatID)
+	values.Set("from_chat_id", opt.FromChatID)
+	if opt.DisableNotification {
 		values.Set("disable_notification", "true")
 	}
-	if messageID > 0 {
-		values.Set("message_id", strconv.Itoa(messageID))
-	}
+	values.Set("message_id", strconv.Itoa(opt.MessageID))
 	r, err := bot.createResponse("forwardMessage", values)
 	var message Message
 	err = json.Unmarshal(r.Result, &message)
@@ -156,18 +159,21 @@ func (bot *Telebot) ForwardMessage(chatID string, fromChatID string, disableNoti
 //				ReplyKeyboardMarkup or  or to force a reply from the user.
 //				ReplyKeyboardRemove or
 //				ForceReply
-func (bot *Telebot) SendPhoto(chatID string, photo string, caption string, disableNotification bool, replyToMessageID int) (Message, error) {
+func (bot *Telebot) SendPhoto(opt *sendPhotoOpts) (Message, error) {
 	values := url.Values{}
-	values.Set("chat_id", chatID)
-	values.Set("photo", photo)
-	if len(caption) > 0 {
-		values.Set("caption", caption)
+	if opt.ChatID == "" || opt.Photo == "" {
+		return Message{}, errMissingParam
 	}
-	if disableNotification {
+	values.Set("chat_id", opt.ChatID)
+	values.Set("photo", opt.Photo)
+	if len(opt.Caption) > 0 {
+		values.Set("caption", opt.Caption)
+	}
+	if opt.DisableNotification {
 		values.Set("disable_notification", "true")
 	}
-	if replyToMessageID > 0 {
-		values.Set("reply_to_message_id", strconv.Itoa(replyToMessageID))
+	if opt.ReplyToMessageID > 0 {
+		values.Set("reply_to_message_id", strconv.Itoa(opt.ReplyToMessageID))
 	}
 	r, err := bot.createResponse("sendPhoto", values)
 	var message Message

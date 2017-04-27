@@ -92,10 +92,10 @@ func (t *Telebot) GetUpdates(offset int, limit int, timeout int, allowedUpdates 
 	return updates, nil
 }
 
-// setWebhook
-// Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an
-// update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized
-// Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns true.
+// SetWebhook - "setWebhook" Use this method to specify a url and receive incoming updates via an outgoing webhook.
+// Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a
+// JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts.
+// Returns true.
 //
 // If you'd like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in
 // the URL, e.g. https://www.example.com/<token>. Since nobody else knows your bot‘s token, you can be pretty
@@ -120,6 +120,38 @@ func (t *Telebot) GetUpdates(offset int, limit int, timeout int, allowedUpdates 
 //
 // Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted
 // updates may be received for a short period of time.
+// func (t *Telebot) SetWebhook(URL string, options *setWebhookOptions) error {
+// 	router := chi.NewRouter()
+// 	// router.Use(middleware.Logger)
+// 	// router.Use(middleware.Recoverer)
+
+// 	router.Get("/", rootHandler)
+
+// 	http.ListenAndServe(":80", router)
+
+// 	values := url.Values{}
+// 	values.Set("url", URL)
+// 	if certificate != "" {
+// 		values.Set("certificate", certificate)
+// 	}
+// 	if maxConnections > 0 {
+// 		values.Set("max_connections", strconv.Itoa(maxConnections))
+// 	}
+// 	if len(allowedUpdates) > 0 {
+// 		values["allowed_updates"] = allowedUpdates
+// 	}
+// 	r, err := t.createResponse("setWebhook", values)
+// 	if err != nil {
+// 		errLog("SetWebhook createResponse", err)
+// 		return err
+// 	}
+// 	var result bool
+// 	err = json.Unmarshal(r.Result, &result)
+// 	if err != nil {
+// 		errLog("GetUpdates Unmarshal", err)
+// 	}
+// 	return err
+// }
 
 // WebhookInfo
 // Contains information about the current status of a webhook.
