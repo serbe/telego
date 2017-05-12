@@ -33,6 +33,9 @@ func (bot *Telebot) SendGame(chatID int, gameShortName string, disableNotificati
 
 	// }
 	r, err := bot.createResponse("sendGame", values)
+	if err != nil {
+		errLog("SendMessage createResponse", err)
+	}
 	var message Message
 	err = json.Unmarshal(r.Result, &message)
 	if err != nil {

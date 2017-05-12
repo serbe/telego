@@ -132,10 +132,13 @@ func (bot *Telebot) ForwardMessage(opt *ForwardMessageOpts) (Message, error) {
 	}
 	values.Set("message_id", strconv.Itoa(opt.MessageID))
 	r, err := bot.createResponse("forwardMessage", values)
+	if err != nil {
+		errLog("forwardMessage createResponse", err)
+	}
 	var message Message
 	err = json.Unmarshal(r.Result, &message)
 	if err != nil {
-		errLog("SendMessage Unmarshal", err)
+		errLog("forwardMessage Unmarshal", err)
 	}
 	return message, err
 }
@@ -177,10 +180,13 @@ func (bot *Telebot) SendPhoto(opt *SendPhotoOpts) (Message, error) {
 		values.Set("reply_to_message_id", strconv.Itoa(opt.ReplyToMessageID))
 	}
 	r, err := bot.createResponse("sendPhoto", values)
+	if err != nil {
+		errLog("SendPhoto createResponse", err)
+	}
 	var message Message
 	err = json.Unmarshal(r.Result, &message)
 	if err != nil {
-		errLog("SendMessage Unmarshal", err)
+		errLog("SendPhoto Unmarshal", err)
 	}
 	return message, err
 }
@@ -350,6 +356,9 @@ func (bot *Telebot) LeaveChat(chatID string) (bool, error) {
 	values := url.Values{}
 	values["chat_id"] = []string{chatID}
 	r, err := bot.createResponse("leaveChat", values)
+	if err != nil {
+		errLog("LeaveChat createResponse", err)
+	}
 	var result bool
 	err = json.Unmarshal(r.Result, &result)
 	if err != nil {

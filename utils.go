@@ -19,21 +19,26 @@ func (bot *Telebot) createResponse(method string, values url.Values) (Response, 
 	fullURL := urlAPI + bot.Token + "/" + method
 	resp, err := bot.Client.PostForm(fullURL, values)
 	if err != nil {
-		errLog("bot.Client.PostForm", err)
+		errLog("createResponse bot.Client.PostForm", err)
 		return Response{}, err
 	}
 
-	defer resp.Body.Close()
+	defer func() {
+		err = resp.Body.Close()
+		if err != nil {
+			errLog("createResponse resp.Body.Close", err)
+		}
+	}()
 
 	if resp.StatusCode == http.StatusForbidden {
 		err = ErrForbiddenHTTP
-		errLog("http.StatusForbidden", err)
+		errLog("createResponse http.StatusForbidden", err)
 		return Response{}, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		errLog("ioutil.ReadAll", err)
+		errLog("createResponse ioutil.ReadAll", err)
 		return Response{}, err
 	}
 
@@ -41,11 +46,15 @@ func (bot *Telebot) createResponse(method string, values url.Values) (Response, 
 
 	var response Response
 
-	json.Unmarshal(body, &response)
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		errLog("createResponse json.Unmarshal", err)
+		return Response{}, err
+	}
 
 	if !response.Ok {
 		err = errors.New(response.Description)
-		errLog("!response.Ok", err)
+		errLog("createResponse !response.Ok", err)
 		return response, err
 	}
 
@@ -64,12 +73,17 @@ func debugLog(s string) {
 	}
 }
 
-func rootHandler(w http.ResponseWriter, r *http.Request) {
-	defer r.Body.Close()
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		errLog("rootHandler ReadAll", err)
-		return
-	}
-	log.Println(string(body))
-}
+// func rootHandler(w http.ResponseWriter, r *http.Request) {
+// 	body, err := ioutil.ReadAll(r.Body)
+// 	if err != nil {
+// 		errLog("rootHandler ReadAll", err)
+// 		return
+// 	}
+// 	defer func() {
+// 		err = r.Body.Close()
+// 		if err != nil {
+// 			errLog("createResponse resp.Body.Close", err)
+// 		}
+// 	}()
+// 	log.Println(string(body))
+// }
