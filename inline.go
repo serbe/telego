@@ -12,7 +12,7 @@ package telego
 type InlineQuery struct {
 	ID       string    `json:"id"`
 	From     *User     `json:"from"`
-	Location *Location `json:"location, omitempty"`
+	Location *Location `json:"location,omitempty"`
 	Query    string    `json:"query"`
 	Offset   string    `json:"offset"`
 }
@@ -399,7 +399,7 @@ type InlineQuery struct {
 type ChosenInlineResult struct {
 	ResultID        string    `json:"result_id"`
 	From            *User     `json:"from"`
-	Location        *Location `json:"location, omitempty"`
-	InlineMessageID string    `json:"inline_message_id, omitempty"`
+	Location        *Location `json:"location,omitempty"`
+	InlineMessageID string    `json:"inline_message_id,omitempty"`
 	Query           string    `json:"query"`
 }

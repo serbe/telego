@@ -1,0 +1,11 @@
+{
+	"version": "0.1.0",
+	"isShellCommand": true,
+	"showOutput": "always",
+	"tasks": [{
+			"taskName": "build",
+			"command": "go",
+			"args": ["build"]
+		}
+	]
+}

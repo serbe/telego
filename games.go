@@ -62,9 +62,9 @@ type Game struct {
 	Title        string           `json:"title"`
 	Description  string           `json:"description"`
 	Photo        []*PhotoSize     `json:"photo"`
-	Text         string           `json:"text, omitempty"`
-	TextEntities []*MessageEntity `json:"text_entities, omitempty"`
-	Animation    *Animation       `json:"animation, omitempty"`
+	Text         string           `json:"text,omitempty"`
+	TextEntities []*MessageEntity `json:"text_entities,omitempty"`
+	Animation    *Animation       `json:"animation,omitempty"`
 }
 
 // Animation - You can provide an animation for your game so that it looks stylish in chats (check out Lumberjack
@@ -78,10 +78,10 @@ type Game struct {
 // file_size	Integer		Optional. File size
 type Animation struct {
 	FileID   string     `json:"file_id"`
-	Thumb    *PhotoSize `json:"thumb, omitempty"`
-	FileName string     `json:"file_name, omitempty"`
-	MimeType string     `json:"mime_type, omitempty"`
-	FileSize int        `json:"file_size, omitempty"`
+	Thumb    *PhotoSize `json:"thumb,omitempty"`
+	FileName string     `json:"file_name,omitempty"`
+	MimeType string     `json:"mime_type,omitempty"`
+	FileSize int        `json:"file_size,omitempty"`
 }
 
 // CallbackGame - A placeholder, currently holds no information. Use BotFather to set up your game.

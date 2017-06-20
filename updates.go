@@ -25,13 +25,13 @@ import (
 // callback_query		CallbackQuery	Optional. New incoming callback query
 type Update struct {
 	UpdateID           int64               `json:"update_id"`
-	Message            *Message            `json:"message, omitempty"`
-	EditedMessage      *Message            `json:"edited_message, omitempty"`
-	ChannelPost        *Message            `json:"channel_post, omitempty"`
-	EditedChannelPost  *Message            `json:"edited_channel_post, omitempty"`
-	InlineQuery        *InlineQuery        `json:"inline_query, omitempty"`
-	ChosenInlineResult *ChosenInlineResult `json:"chosen_inline_result, omitempty"`
-	CallbackQuery      *CallbackQuery      `json:"callback_query, omitempty"`
+	Message            *Message            `json:"message,omitempty"`
+	EditedMessage      *Message            `json:"edited_message,omitempty"`
+	ChannelPost        *Message            `json:"channel_post,omitempty"`
+	EditedChannelPost  *Message            `json:"edited_channel_post,omitempty"`
+	InlineQuery        *InlineQuery        `json:"inline_query,omitempty"`
+	ChosenInlineResult *ChosenInlineResult `json:"chosen_inline_result,omitempty"`
+	CallbackQuery      *CallbackQuery      `json:"callback_query,omitempty"`
 }
 
 // GetUpdates - "getUpdates" Use this method to receive incoming updates using long polling (wiki). An Array of
@@ -120,38 +120,30 @@ func (t *Telebot) GetUpdates(opt *GetUpdatesOpt) ([]Update, error) {
 //
 // Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted
 // updates may be received for a short period of time.
-// func (t *Telebot) SetWebhook(URL string, options *setWebhookOptions) error {
-// 	router := chi.NewRouter()
-// 	// router.Use(middleware.Logger)
-// 	// router.Use(middleware.Recoverer)
-
-// 	router.Get("/", rootHandler)
-
-// 	http.ListenAndServe(":80", router)
-
-// 	values := url.Values{}
-// 	values.Set("url", URL)
-// 	if certificate != "" {
-// 		values.Set("certificate", certificate)
-// 	}
-// 	if maxConnections > 0 {
-// 		values.Set("max_connections", strconv.Itoa(maxConnections))
-// 	}
-// 	if len(allowedUpdates) > 0 {
-// 		values["allowed_updates"] = allowedUpdates
-// 	}
-// 	r, err := t.createResponse("setWebhook", values)
-// 	if err != nil {
-// 		errLog("SetWebhook createResponse", err)
-// 		return err
-// 	}
-// 	var result bool
-// 	err = json.Unmarshal(r.Result, &result)
-// 	if err != nil {
-// 		errLog("GetUpdates Unmarshal", err)
-// 	}
-// 	return err
-// }
+func (t *Telebot) SetWebhook(URL string, opt *SetWebhookOpt) error {
+	values := url.Values{}
+	values.Set("url", URL)
+	if opt.Certificate != "" {
+		values.Set("certificate", opt.Certificate)
+	}
+	if opt.MaxConnections > 0 {
+		values.Set("max_connections", strconv.Itoa(opt.MaxConnections))
+	}
+	if len(opt.AllowedUpdates) > 0 {
+		values["allowed_updates"] = opt.AllowedUpdates
+	}
+	r, err := t.createResponse("setWebhook", values)
+	if err != nil {
+		errLog("SetWebhook createResponse", err)
+		return err
+	}
+	var result bool
+	err = json.Unmarshal(r.Result, &result)
+	if err != nil {
+		errLog("GetUpdates Unmarshal", err)
+	}
+	return err
+}
 
 // WebhookInfo
 // Contains information about the current status of a webhook.

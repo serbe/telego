@@ -1,5 +1,16 @@
 package telego
 
+import "encoding/json"
+
+// Response - response from the Telegram API
+type Response struct {
+	Ok          bool                `json:"ok"`
+	Result      json.RawMessage     `json:"result"`
+	ErrorCode   int                 `json:"error_code"`
+	Description string              `json:"description"`
+	Parameters  *ResponseParameters `json:"parameters"`
+}
+
 // User - This object represents a Telegram user or bot.
 //
 // id	        Integer	Unique identifier for this user or bot
@@ -9,8 +20,8 @@ package telego
 type User struct {
 	ID        int    `json:"id"`
 	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name, omitempty"`
-	UserName  string `json:"username, omitempty"`
+	LastName  string `json:"last_name,omitempty"`
+	UserName  string `json:"username,omitempty"`
 }
 
 // Chat - This object represents a chat.
@@ -29,11 +40,11 @@ type User struct {
 type Chat struct {
 	ID                          int    `json:"id"`
 	Type                        string `json:"type"`
-	Title                       string `json:"title, omitempty"`
-	UserName                    string `json:"username, omitempty"`
-	FirstName                   string `json:"first_name, omitempty"`
-	LastName                    string `json:"last_name, omitempty"`
-	AllMembersAreAdministrators bool   `json:"all_members_are_administrators, omitempty"`
+	Title                       string `json:"title,omitempty"`
+	UserName                    string `json:"username,omitempty"`
+	FirstName                   string `json:"first_name,omitempty"`
+	LastName                    string `json:"last_name,omitempty"`
+	AllMembersAreAdministrators bool   `json:"all_members_are_administrators,omitempty"`
 }
 
 // Message - This object represents a message.
@@ -93,37 +104,37 @@ type Message struct {
 	MessageID             int              `json:"message_id"`
 	Date                  int              `json:"date"`
 	Chat                  *Chat            `json:"chat"`
-	From                  *User            `json:"from, omitempty"`
-	ForwardFrom           *User            `json:"forward_from, omitempty"`
-	ForwardFromChat       *Chat            `json:"forward_from_chat, omitempty"`
-	ForwardFromMessageID  int              `json:"forward_from_message_id, omitempty"`
-	ForwardDate           int              `json:"forward_date, omitempty"`
-	ReplyToMessage        *Message         `json:"reply_to_message, omitempty"`
-	EditDate              int              `json:"edit_date, omitempty"`
-	Text                  string           `json:"text, omitempty"`
-	Entities              []*MessageEntity `json:"entities, omitempty"`
-	Audio                 *Audio           `json:"audio, omitempty"`
-	Document              *Document        `json:"document, omitempty"`
-	Game                  *Game            `json:"game, omitempty"`
-	Photo                 []*PhotoSize     `json:"photo, omitempty"`
-	Sticker               *Sticker         `json:"sticker, omitempty"`
-	Video                 *Video           `json:"video, omitempty"`
-	Voice                 *Voice           `json:"voice, omitempty"`
-	Caption               string           `json:"caption, omitempty"`
-	Contact               *Contact         `json:"contact, omitempty"`
-	Location              *Location        `json:"location, omitempty"`
-	Venue                 *Venue           `json:"venue, omitempty"`
-	NewChatMember         *User            `json:"new_chat_member, omitempty"`
-	LeftChatMember        *User            `json:"left_chat_member, omitempty"`
-	NewChatTitle          string           `json:"new_chat_title, omitempty"`
-	NewChatPhoto          []*PhotoSize     `json:"new_chat_photo, omitempty"`
-	DeleteChatPhoto       bool             `json:"delete_chat_photo, omitempty"`
-	GroupChatCreated      bool             `json:"group_chat_created, omitempty"`
-	SupergroupChatCreated bool             `json:"supergroup_chat_created, omitempty"`
-	ChannelChatCreated    bool             `json:"channel_chat_created, omitempty"`
-	MigrateToChatID       int              `json:"migrate_to_chat_id, omitempty"`
-	MigrateFromChatID     int              `json:"migrate_from_chat_id, omitempty"`
-	PinnedMessage         *Message         `json:"pinned_message, omitempty"`
+	From                  *User            `json:"from,omitempty"`
+	ForwardFrom           *User            `json:"forward_from,omitempty"`
+	ForwardFromChat       *Chat            `json:"forward_from_chat,omitempty"`
+	ForwardFromMessageID  int              `json:"forward_from_message_id,omitempty"`
+	ForwardDate           int              `json:"forward_date,omitempty"`
+	ReplyToMessage        *Message         `json:"reply_to_message,omitempty"`
+	EditDate              int              `json:"edit_date,omitempty"`
+	Text                  string           `json:"text,omitempty"`
+	Entities              []*MessageEntity `json:"entities,omitempty"`
+	Audio                 *Audio           `json:"audio,omitempty"`
+	Document              *Document        `json:"document,omitempty"`
+	Game                  *Game            `json:"game,omitempty"`
+	Photo                 []*PhotoSize     `json:"photo,omitempty"`
+	Sticker               *Sticker         `json:"sticker,omitempty"`
+	Video                 *Video           `json:"video,omitempty"`
+	Voice                 *Voice           `json:"voice,omitempty"`
+	Caption               string           `json:"caption,omitempty"`
+	Contact               *Contact         `json:"contact,omitempty"`
+	Location              *Location        `json:"location,omitempty"`
+	Venue                 *Venue           `json:"venue,omitempty"`
+	NewChatMember         *User            `json:"new_chat_member,omitempty"`
+	LeftChatMember        *User            `json:"left_chat_member,omitempty"`
+	NewChatTitle          string           `json:"new_chat_title,omitempty"`
+	NewChatPhoto          []*PhotoSize     `json:"new_chat_photo,omitempty"`
+	DeleteChatPhoto       bool             `json:"delete_chat_photo,omitempty"`
+	GroupChatCreated      bool             `json:"group_chat_created,omitempty"`
+	SupergroupChatCreated bool             `json:"supergroup_chat_created,omitempty"`
+	ChannelChatCreated    bool             `json:"channel_chat_created,omitempty"`
+	MigrateToChatID       int              `json:"migrate_to_chat_id,omitempty"`
+	MigrateFromChatID     int              `json:"migrate_from_chat_id,omitempty"`
+	PinnedMessage         *Message         `json:"pinned_message,omitempty"`
 }
 
 // MessageEntity - This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
@@ -139,8 +150,8 @@ type MessageEntity struct {
 	Type   string `json:"type"`
 	Offset int    `json:"offset"`
 	Length int    `json:"length"`
-	URL    string `json:"url, omitempty"`
-	User   *User  `json:"user, omitempty"`
+	URL    string `json:"url,omitempty"`
+	User   *User  `json:"user,omitempty"`
 }
 
 // PhotoSize - This object represents one size of a photo or a file / sticker thumbnail.
@@ -152,7 +163,7 @@ type PhotoSize struct {
 	FileID   string `json:"file_id"`
 	Width    int    `json:"width"`
 	Height   int    `json:"height"`
-	FileSize int    `json:"file_size, omitempty"`
+	FileSize int    `json:"file_size,omitempty"`
 }
 
 // Audio - This object represents an audio file to be treated as music by the Telegram clients.
@@ -165,10 +176,10 @@ type PhotoSize struct {
 type Audio struct {
 	FileID    string `json:"file_id"`
 	Duration  int    `json:"duration"`
-	Performer string `json:"performer, omitempty"`
-	Title     string `json:"title, omitempty"`
-	MimeType  string `json:"mime_type, omitempty"`
-	FileSize  int    `json:"file_size, omitempty"`
+	Performer string `json:"performer,omitempty"`
+	Title     string `json:"title,omitempty"`
+	MimeType  string `json:"mime_type,omitempty"`
+	FileSize  int    `json:"file_size,omitempty"`
 }
 
 // Document - This object represents a general file (as opposed to photos, voice messages and audio files).
@@ -179,10 +190,10 @@ type Audio struct {
 // file_size	Integer		Optional. File size
 type Document struct {
 	FileID   string     `json:"file_id"`
-	Thumb    *PhotoSize `json:"thumb, omitempty"`
-	FileName string     `json:"file_name, omitempty"`
-	MimeType string     `json:"mime_type, omitempty"`
-	FileSize int        `json:"file_size, omitempty"`
+	Thumb    *PhotoSize `json:"thumb,omitempty"`
+	FileName string     `json:"file_name,omitempty"`
+	MimeType string     `json:"mime_type,omitempty"`
+	FileSize int        `json:"file_size,omitempty"`
 }
 
 // Sticker - This object represents a sticker.
@@ -196,9 +207,9 @@ type Sticker struct {
 	FileID   string     `json:"file_id"`
 	Width    int        `json:"width"`
 	Height   int        `json:"height"`
-	Thumb    *PhotoSize `json:"thumb, omitempty"`
-	Emoji    string     `json:"emoji, omitempty"`
-	FileSize int        `json:"file_size, omitempty"`
+	Thumb    *PhotoSize `json:"thumb,omitempty"`
+	Emoji    string     `json:"emoji,omitempty"`
+	FileSize int        `json:"file_size,omitempty"`
 }
 
 // Video - This object represents a video file.
@@ -214,9 +225,9 @@ type Video struct {
 	Width    int        `json:"width"`
 	Height   int        `json:"height"`
 	Duration int        `json:"duration"`
-	Thumb    *PhotoSize `json:"thumb, omitempty"`
-	MimeType string     `json:"mime_type, omitempty"`
-	FileSize int        `json:"file_size, omitempty"`
+	Thumb    *PhotoSize `json:"thumb,omitempty"`
+	MimeType string     `json:"mime_type,omitempty"`
+	FileSize int        `json:"file_size,omitempty"`
 }
 
 // Voice - This object represents a voice note.
@@ -227,8 +238,8 @@ type Video struct {
 type Voice struct {
 	FileID   string `json:"file_id"`
 	Duration int    `json:"duration"`
-	MimeType string `json:"mime_type, omitempty"`
-	FileSize int    `json:"file_size, omitempty"`
+	MimeType string `json:"mime_type,omitempty"`
+	FileSize int    `json:"file_size,omitempty"`
 }
 
 // Contact - This object represents a phone contact.
@@ -239,8 +250,8 @@ type Voice struct {
 type Contact struct {
 	PhoneNumber string `json:"phone_number"`
 	FirstName   string `json:"first_name"`
-	LastName    string `json:"last_name, omitempty"`
-	UserID      int    `json:"user_id, omitempty"`
+	LastName    string `json:"last_name,omitempty"`
+	UserID      int    `json:"user_id,omitempty"`
 }
 
 // Location - This object represents a point on the map.
@@ -261,7 +272,7 @@ type Venue struct {
 	Location     *Location `json:"location"`
 	Title        string    `json:"title"`
 	Address      string    `json:"address"`
-	FoursquareID string    `json:"foursquare_id, omitempty"`
+	FoursquareID string    `json:"foursquare_id,omitempty"`
 }
 
 // UserProfilePhotos - This object represent a user's profile pictures.
@@ -285,8 +296,8 @@ type UserProfilePhotos struct {
 //						to get the file.
 type File struct {
 	FileID   string `json:"file_id"`
-	FileSize int    `json:"file_size, omitempty"`
-	FilePath string `json:"file_path, omitempty"`
+	FileSize int    `json:"file_size,omitempty"`
+	FilePath string `json:"file_path,omitempty"`
 }
 
 // ReplyKeyboardMarkup - This object represents a custom keyboard with reply options
@@ -312,9 +323,9 @@ type File struct {
 // select the new language. Other users in the group don’t see the keyboard.
 type ReplyKeyboardMarkup struct {
 	Keyboard        [][]*KeyboardButton `json:"keyboard"`
-	ResizeKeyboard  bool                `json:"resize_keyboard, omitempty"`
-	OneTimeKeyboard bool                `json:"one_time_keyboard, omitempty"`
-	Selective       bool                `json:"selective, omitempty"`
+	ResizeKeyboard  bool                `json:"resize_keyboard,omitempty"`
+	OneTimeKeyboard bool                `json:"one_time_keyboard,omitempty"`
+	Selective       bool                `json:"selective,omitempty"`
 }
 
 // KeyboardButton - This object represents one button of the reply keyboard.
@@ -331,8 +342,8 @@ type ReplyKeyboardMarkup struct {
 // 9 April, 2016. Older clients will ignore them.
 type KeyboardButton struct {
 	Text            string `json:"text"`
-	RequestContact  bool   `json:"request_contact, omitempty"`
-	RequestLocation bool   `json:"request_location, omitempty"`
+	RequestContact  bool   `json:"request_contact,omitempty"`
+	RequestLocation bool   `json:"request_location,omitempty"`
 }
 
 // ReplyKeyboardRemove - Upon receiving a message with this object, Telegram clients will remove the
@@ -351,7 +362,7 @@ type KeyboardButton struct {
 // keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
 type ReplyKeyboardRemove struct {
 	RemoveKeyboard bool `json:"remove_keyboard"`
-	Selective      bool `json:"selective, omitempty"`
+	Selective      bool `json:"selective,omitempty"`
 }
 
 // InlineKeyboardMarkup - This object represents an inline keyboard that appears right next to the message
@@ -388,11 +399,11 @@ type InlineKeyboardMarkup struct {
 // NOTE: This type of button must always be the first button in the first row.
 type InlineKeyboardButton struct {
 	Text                         string        `json:"text"`
-	URL                          string        `json:"url, omitempty"`
-	CallbackData                 string        `json:"callback_data, omitempty"`
-	SwitchInlineQuery            string        `json:"switch_inline_query, omitempty"`
-	WwitchInlineQueryCurrentChat string        `json:"switch_inline_query_current_chat, omitempty"`
-	CallbackGame                 *CallbackGame `json:"callback_game, omitempty"`
+	URL                          string        `json:"url,omitempty"`
+	CallbackData                 string        `json:"callback_data,omitempty"`
+	SwitchInlineQuery            string        `json:"switch_inline_query,omitempty"`
+	WwitchInlineQueryCurrentChat string        `json:"switch_inline_query_current_chat,omitempty"`
+	CallbackGame                 *CallbackGame `json:"callback_game,omitempty"`
 }
 
 // CallbackQuery - This object represents an incoming callback query from a callback button in an inline
@@ -420,11 +431,11 @@ type InlineKeyboardButton struct {
 type CallbackQuery struct {
 	ID              string   `json:"id"`
 	From            *User    `json:"from"`
-	Message         *Message `json:"message, omitempty"`
-	InlineMessageID string   `json:"inline_message_id, omitempty"`
-	ChatInstance    string   `json:"chat_instance, omitempty"`
-	Data            string   `json:"data, omitempty"`
-	GameShortName   string   `json:"game_short_name, omitempty"`
+	Message         *Message `json:"message,omitempty"`
+	InlineMessageID string   `json:"inline_message_id,omitempty"`
+	ChatInstance    string   `json:"chat_instance,omitempty"`
+	Data            string   `json:"data,omitempty"`
+	GameShortName   string   `json:"game_short_name,omitempty"`
 }
 
 // ForceReply - Upon receiving a message with this object, Telegram clients will display a reply
@@ -448,8 +459,8 @@ type CallbackQuery struct {
 // will receive the user’s answers even if it only receives replies, commands and mentions — without any
 // extra work for the user.
 type ForceReply struct {
-	ForceReply bool `json:"force_reply, omitempty"`
-	Selective  bool `json:"selective, omitempty"`
+	ForceReply bool `json:"force_reply,omitempty"`
+	Selective  bool `json:"selective,omitempty"`
 }
 
 // ChatMember - This object contains information about one member of the chat.
@@ -472,6 +483,6 @@ type ChatMember struct {
 // retry_after	        Integer	Optional. In case of exceeding flood control, the number of seconds left
 //								to wait before the request can be repeated
 type ResponseParameters struct {
-	MigrateToChatID int `json:"migrate_to_chat_id, omitempty"`
-	RetryAfter      int `json:"retry_after, omitempty"`
+	MigrateToChatID int `json:"migrate_to_chat_id,omitempty"`
+	RetryAfter      int `json:"retry_after,omitempty"`
 }
