@@ -8,21 +8,23 @@ import (
 
 // Update - This object represents an incoming update.
 // At most one of the optional parameters can be present in any given update.
-// Field				Type			Description
-// update_id			Integer			The update‘s unique identifier. Update identifiers start from a certain
-//										positive number and increase sequentially. This ID becomes especially
-//										handy if you’re using Webhooks, since it allows you to ignore repeated
-//										updates or to restore the correct update sequence, should they get out
-//										of order.
-// message				Message			Optional. New incoming message of any kind — text, photo, sticker, etc.
-// edited_message		Message			Optional. New version of a message that is known to the bot and was edited
-// channel_post			Message			Optional. New incoming channel post of any kind — text, photo, sticker, etc.
-// edited_channel_post	Message			Optional. New version of a channel post that is known to the bot and was edited
-// inline_query			InlineQuery		Optional. New incoming inline query
-// chosen_inline_result	ChosenInlineResult
-//										Optional. The result of an inline query that was chosen by a user and sent
-//										to their chat partner.
-// callback_query		CallbackQuery	Optional. New incoming callback query
+//
+// Field				Type				Description
+// update_id			Integer				The update‘s unique identifier. Update identifiers start from a certain
+//											positive number and increase sequentially. This ID becomes especially
+//											handy if you’re using Webhooks, since it allows you to ignore repeated
+//											updates or to restore the correct update sequence, should they get out
+//											of order.
+// message				Message				Optional. New incoming message of any kind — text, photo, sticker, etc.
+// edited_message		Message				Optional. New version of a message that is known to the bot and was edited
+// channel_post			Message				Optional. New incoming channel post of any kind — text, photo, sticker, etc.
+// edited_channel_post	Message				Optional. New version of a channel post that is known to the bot and was edited
+// inline_query			InlineQuery			Optional. New incoming inline query
+// chosen_inline_result	ChosenInlineResult	Optional. The result of an inline query that was chosen by a user and sent
+//											to their chat partner.
+// callback_query		CallbackQuery		Optional. New incoming callback query
+// shipping_query		ShippingQuery		Optional. New incoming shipping query. Only for invoices with flexible price
+// pre_checkout_query	PreCheckoutQuery	Optional. New incoming pre-checkout query. Contains full information about checkout
 type Update struct {
 	UpdateID           int64               `json:"update_id"`
 	Message            *Message            `json:"message,omitempty"`
@@ -32,10 +34,13 @@ type Update struct {
 	InlineQuery        *InlineQuery        `json:"inline_query,omitempty"`
 	ChosenInlineResult *ChosenInlineResult `json:"chosen_inline_result,omitempty"`
 	CallbackQuery      *CallbackQuery      `json:"callback_query,omitempty"`
+	ShippingQuery      *ShippingQuery      `json:"shipping_query,omitempty"`
+	PreCheckoutQuery   *PreCheckoutQuery   `json:"pre_checkout_query,omitempty"`
 }
 
 // GetUpdates - "getUpdates" Use this method to receive incoming updates using long polling (wiki). An Array of
 // Update objects is returned.
+//
 // Parameters		Type			Required	Description
 // offset			Integer			Optional	Identifier of the first update to be returned. Must be greater by
 //												one than the highest among the identifiers of previously received
@@ -110,9 +115,8 @@ func (t *Telebot) GetUpdates(opt *GetUpdatesOpt) ([]Update, error) {
 //											webhook for update delivery, 1-100. Defaults to 40. Use lower values
 //											to limit the load on your bot‘s server, and higher values to increase
 //											your bot’s throughput.
-// allowed_updates	Array of String
-//								Optional	List the types of updates you want your bot to receive. For example,
-//											specify [“message”, “edited_channel_post”, “callback_query”] to only
+// allowed_updates	Array		Optional	List the types of updates you want your bot to receive. For example,
+//					of String				specify [“message”, “edited_channel_post”, “callback_query”] to only
 //											receive updates of these types. See Update for a complete list of
 //											available update types. Specify an empty list to receive all updates
 //											regardless of type (default). If not specified, the previous setting
@@ -144,6 +148,12 @@ func (t *Telebot) SetWebhook(URL string, opt *SetWebhookOpt) error {
 	}
 	return err
 }
+
+// deleteWebhook
+// Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success. Requires no parameters.
+
+// getWebhookInfo
+// Use this method to get current webhook status. Requires no parameters. On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty.
 
 // WebhookInfo
 // Contains information about the current status of a webhook.

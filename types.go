@@ -13,38 +13,45 @@ type Response struct {
 
 // User - This object represents a Telegram user or bot.
 //
-// id	        Integer	Unique identifier for this user or bot
-// first_name	String	User‘s or bot’s first name
-// last_name	String	Optional. User‘s or bot’s last name
-// username	    String	Optional. User‘s or bot’s username
+// id				Integer	Unique identifier for this user or bot
+// first_name		String	User‘s or bot’s first name
+// last_name		String	Optional. User‘s or bot’s last name
+// username			String	Optional. User‘s or bot’s username
+// language_code	String	Optional. IETF language tag of the user's language
 type User struct {
-	ID        int    `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name,omitempty"`
-	UserName  string `json:"username,omitempty"`
+	ID           int    `json:"id"`
+	FirstName    string `json:"first_name"`
+	LastName     string `json:"last_name,omitempty"`
+	UserName     string `json:"username,omitempty"`
+	LanguageCode string `json:"language_code,omitempty"`
 }
 
 // Chat - This object represents a chat.
 //
-// id	            Integer	Unique identifier for this chat. This number may be greater than 32 bits
-//                          and some programming languages may have difficulty/silent defects in
-//							interpreting it. But it smaller than 52 bits, so a signed 64 bit integer
-//							or double-precision float type are safe for storing this identifier.
-// type	            String	Type of chat, can be either “private”, “group”, “supergroup” or “channel”
-// title	        String	Optional. Title, for supergroups, channels and group chats
-// username	        String	Optional. Username, for private chats, supergroups and channels if available
-// first_name	    String	Optional. First name of the other party in a private chat
-// last_name	    String	Optional. Last name of the other party in a private chat
-// all_members_are_administrators
-//					Boolean	Optional. True if a group has ‘All Members Are Admins’ enabled.
+// id	            				Integer	Unique identifier for this chat. This number may be greater than 32 bits
+//                          				and some programming languages may have difficulty/silent defects in
+//											interpreting it. But it smaller than 52 bits, so a signed 64 bit integer
+//											or double-precision float type are safe for storing this identifier.
+// type	            				String	Type of chat, can be either “private”, “group”, “supergroup” or “channel”
+// title	        				String	Optional. Title, for supergroups, channels and group chats
+// username	        				String	Optional. Username, for private chats, supergroups and channels if available
+// first_name	    				String	Optional. First name of the other party in a private chat
+// last_name	    				String	Optional. Last name of the other party in a private chat
+// all_members_are_administrators	Boolean	Optional. True if a group has ‘All Members Are Admins’ enabled.
+// photo	     				ChatPhoto	Optional. Chat photo. Returned only in getChat.
+// description	    				String	Optional. Description, for supergroups and channel chats. Returned only in getChat.
+// invite_link	    				String	Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
 type Chat struct {
-	ID                          int    `json:"id"`
-	Type                        string `json:"type"`
-	Title                       string `json:"title,omitempty"`
-	UserName                    string `json:"username,omitempty"`
-	FirstName                   string `json:"first_name,omitempty"`
-	LastName                    string `json:"last_name,omitempty"`
-	AllMembersAreAdministrators bool   `json:"all_members_are_administrators,omitempty"`
+	ID                          int       `json:"id"`
+	Type                        string    `json:"type"`
+	Title                       string    `json:"title,omitempty"`
+	UserName                    string    `json:"username,omitempty"`
+	FirstName                   string    `json:"first_name,omitempty"`
+	LastName                    string    `json:"last_name,omitempty"`
+	AllMembersAreAdministrators bool      `json:"all_members_are_administrators,omitempty"`
+	Photo                       ChatPhoto `json:"photo,omitempty"`
+	Description                 string    `json:"description,omitempty"`
+	InviteLink                  string    `json:"invite_link,omitempty"`
 }
 
 // Message - This object represents a message.
@@ -75,6 +82,9 @@ type Chat struct {
 // sticker	        Sticker	Optional. Message is a sticker, information about the sticker
 // video	        Video	Optional. Message is a video, information about the video
 // voice	        Voice	Optional. Message is a voice message, information about the file
+// video_note	VideoNote	Optional. Message is a video note, information about the video message
+// new_chat_members	Array	Optional. New members that were added to the group or supergroup and information about them
+//					of User	(the bot itself may be one of these members)
 // caption	        String	Optional. Caption for the document, photo or video, 0-200 characters
 // contact	        Contact	Optional. Message is a shared contact, information about the contact
 // location	       Location	Optional. Message is a shared location, information about the location
@@ -100,41 +110,48 @@ type Chat struct {
 //                          double-precision float type are safe for storing this identifier.
 // pinned_message	Message	Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even
 //                          if it is itself a reply.
+// invoice			Invoice	Optional. Message is an invoice for a payment, information about the invoice.
+// successful_payment
+//		SuccessfulPayment	Optional. Message is a service message about a successful payment, information about the payment.
 type Message struct {
-	MessageID             int              `json:"message_id"`
-	Date                  int              `json:"date"`
-	Chat                  *Chat            `json:"chat"`
-	From                  *User            `json:"from,omitempty"`
-	ForwardFrom           *User            `json:"forward_from,omitempty"`
-	ForwardFromChat       *Chat            `json:"forward_from_chat,omitempty"`
-	ForwardFromMessageID  int              `json:"forward_from_message_id,omitempty"`
-	ForwardDate           int              `json:"forward_date,omitempty"`
-	ReplyToMessage        *Message         `json:"reply_to_message,omitempty"`
-	EditDate              int              `json:"edit_date,omitempty"`
-	Text                  string           `json:"text,omitempty"`
-	Entities              []*MessageEntity `json:"entities,omitempty"`
-	Audio                 *Audio           `json:"audio,omitempty"`
-	Document              *Document        `json:"document,omitempty"`
-	Game                  *Game            `json:"game,omitempty"`
-	Photo                 []*PhotoSize     `json:"photo,omitempty"`
-	Sticker               *Sticker         `json:"sticker,omitempty"`
-	Video                 *Video           `json:"video,omitempty"`
-	Voice                 *Voice           `json:"voice,omitempty"`
-	Caption               string           `json:"caption,omitempty"`
-	Contact               *Contact         `json:"contact,omitempty"`
-	Location              *Location        `json:"location,omitempty"`
-	Venue                 *Venue           `json:"venue,omitempty"`
-	NewChatMember         *User            `json:"new_chat_member,omitempty"`
-	LeftChatMember        *User            `json:"left_chat_member,omitempty"`
-	NewChatTitle          string           `json:"new_chat_title,omitempty"`
-	NewChatPhoto          []*PhotoSize     `json:"new_chat_photo,omitempty"`
-	DeleteChatPhoto       bool             `json:"delete_chat_photo,omitempty"`
-	GroupChatCreated      bool             `json:"group_chat_created,omitempty"`
-	SupergroupChatCreated bool             `json:"supergroup_chat_created,omitempty"`
-	ChannelChatCreated    bool             `json:"channel_chat_created,omitempty"`
-	MigrateToChatID       int              `json:"migrate_to_chat_id,omitempty"`
-	MigrateFromChatID     int              `json:"migrate_from_chat_id,omitempty"`
-	PinnedMessage         *Message         `json:"pinned_message,omitempty"`
+	MessageID             int                `json:"message_id"`
+	Date                  int                `json:"date"`
+	Chat                  *Chat              `json:"chat"`
+	From                  *User              `json:"from,omitempty"`
+	ForwardFrom           *User              `json:"forward_from,omitempty"`
+	ForwardFromChat       *Chat              `json:"forward_from_chat,omitempty"`
+	ForwardFromMessageID  int                `json:"forward_from_message_id,omitempty"`
+	ForwardDate           int                `json:"forward_date,omitempty"`
+	ReplyToMessage        *Message           `json:"reply_to_message,omitempty"`
+	EditDate              int                `json:"edit_date,omitempty"`
+	Text                  string             `json:"text,omitempty"`
+	Entities              []*MessageEntity   `json:"entities,omitempty"`
+	Audio                 *Audio             `json:"audio,omitempty"`
+	Document              *Document          `json:"document,omitempty"`
+	Game                  *Game              `json:"game,omitempty"`
+	Photo                 []*PhotoSize       `json:"photo,omitempty"`
+	Sticker               *Sticker           `json:"sticker,omitempty"`
+	Video                 *Video             `json:"video,omitempty"`
+	Voice                 *Voice             `json:"voice,omitempty"`
+	VideoNote             VideoNote          `json:"video_note,omitempty"`
+	NewChatMembers        []*User            `json:"new_chat_members,omitempty"`
+	Caption               string             `json:"caption,omitempty"`
+	Contact               *Contact           `json:"contact,omitempty"`
+	Location              *Location          `json:"location,omitempty"`
+	Venue                 *Venue             `json:"venue,omitempty"`
+	NewChatMember         *User              `json:"new_chat_member,omitempty"`
+	LeftChatMember        *User              `json:"left_chat_member,omitempty"`
+	NewChatTitle          string             `json:"new_chat_title,omitempty"`
+	NewChatPhoto          []*PhotoSize       `json:"new_chat_photo,omitempty"`
+	DeleteChatPhoto       bool               `json:"delete_chat_photo,omitempty"`
+	GroupChatCreated      bool               `json:"group_chat_created,omitempty"`
+	SupergroupChatCreated bool               `json:"supergroup_chat_created,omitempty"`
+	ChannelChatCreated    bool               `json:"channel_chat_created,omitempty"`
+	MigrateToChatID       int                `json:"migrate_to_chat_id,omitempty"`
+	MigrateFromChatID     int                `json:"migrate_from_chat_id,omitempty"`
+	PinnedMessage         *Message           `json:"pinned_message,omitempty"`
+	Invoice               *Invoice           `json:"invoice,omitempty"`
+	SuccessfulPayment     *SuccessfulPayment `json:"successful_payment,omitempty"`
 }
 
 // MessageEntity - This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
@@ -155,6 +172,7 @@ type MessageEntity struct {
 }
 
 // PhotoSize - This object represents one size of a photo or a file / sticker thumbnail.
+//
 // file_id	    String	Unique identifier for this file
 // width	    Integer	Photo width
 // height	    Integer	Photo height
@@ -167,6 +185,7 @@ type PhotoSize struct {
 }
 
 // Audio - This object represents an audio file to be treated as music by the Telegram clients.
+//
 // file_id	    String	Unique identifier for this file
 // duration	    Integer	Duration of the audio in seconds as defined by sender
 // performer	String	Optional. Performer of the audio as defined by sender or by audio tags
@@ -183,6 +202,7 @@ type Audio struct {
 }
 
 // Document - This object represents a general file (as opposed to photos, voice messages and audio files).
+//
 // file_id	    String		Unique file identifier
 // thumb	    PhotoSize	Optional. Document thumbnail as defined by sender
 // file_name	String		Optional. Original filename as defined by sender
@@ -196,23 +216,8 @@ type Document struct {
 	FileSize int        `json:"file_size,omitempty"`
 }
 
-// Sticker - This object represents a sticker.
-// file_id	    String		Unique identifier for this file
-// width	    Integer		Sticker width
-// height	    Integer		Sticker height
-// thumb	    PhotoSize	Optional. Sticker thumbnail in .webp or .jpg format
-// emoji	    String		Optional. Emoji associated with the sticker
-// file_size	Integer		Optional. File size
-type Sticker struct {
-	FileID   string     `json:"file_id"`
-	Width    int        `json:"width"`
-	Height   int        `json:"height"`
-	Thumb    *PhotoSize `json:"thumb,omitempty"`
-	Emoji    string     `json:"emoji,omitempty"`
-	FileSize int        `json:"file_size,omitempty"`
-}
-
 // Video - This object represents a video file.
+//
 // file_id	    String		Unique identifier for this file
 // width	    Integer		Video width as defined by sender
 // height	    Integer		Video height as defined by sender
@@ -231,6 +236,7 @@ type Video struct {
 }
 
 // Voice - This object represents a voice note.
+//
 // file_id	    String	Unique identifier for this file
 // duration	    Integer	Duration of the audio in seconds as defined by sender
 // mime_type	String	Optional. MIME type of the file as defined by sender
@@ -242,7 +248,24 @@ type Voice struct {
 	FileSize int    `json:"file_size,omitempty"`
 }
 
+// VideoNote
+// This object represents a video message (available in Telegram apps as of v.4.0).
+//
+// file_id	String	Unique identifier for this file
+// length	Integer	Video width and height as defined by sender
+// duration	Integer	Duration of the video in seconds as defined by sender
+// thumb	PhotoSize	Optional. Video thumbnail
+// file_size	Integer	Optional. File size
+type VideoNote struct {
+	FileID   string    `json:"file_id"`
+	Length   int       `json:"length"`
+	Duration int       `json:"duration"`
+	Thumb    PhotoSize `json:"thumb,omitempty"`
+	FileSize int       `json:"file_size,omitempty"`
+}
+
 // Contact - This object represents a phone contact.
+//
 // phone_number	String	Contact's phone number
 // first_name	String	Contact's first name
 // last_name	String	Optional. Contact's last name
@@ -376,6 +399,8 @@ type InlineKeyboardMarkup struct {
 	InlineKeyboard [][]*InlineKeyboardButton `json:"inline_keyboard"`
 }
 
+/////////////------------------------
+
 // InlineKeyboardButton  - This object represents one button of an inline keyboard. You must use exactly
 // one of the optional fields.
 //
@@ -463,14 +488,54 @@ type ForceReply struct {
 	Selective  bool `json:"selective,omitempty"`
 }
 
-// ChatMember - This object contains information about one member of the chat.
+// ChatPhoto - This object represents a chat photo.
 //
-// user	    User	Information about the user
-// status	String	The member's status in the chat. Can be “creator”, “administrator”, “member”, “left”
-// 					or “kicked”
+// small_file_id	String	Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo download.
+// big_file_id		String	Unique file identifier of big (640x640) chat photo. This file_id can be used only for photo download.
+type ChatPhoto struct {
+	SmallFileID string `json:"small_file_id,omitempty"`
+	BigFileID   string `json:"big_file_id,omitempty"`
+}
+
+// ChatMember - This object contains information about one member of a chat.
+//
+// user					User	Information about the user
+// status				String	The member's status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”
+// until_date			Integer	Optional. Restictred and kicked only. Date when restrictions will be lifted for this user, unix time
+// can_be_edited		Boolean	Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
+// can_change_info		Boolean	Optional. Administrators only. True, if the administrator can change the chat title, photo and other settings
+// can_post_messages	Boolean	Optional. Administrators only. True, if the administrator can post in the channel, channels only
+// can_edit_messages	Boolean	Optional. Administrators only. True, if the administrator can edit messages of other users, channels only
+// can_delete_messages	Boolean	Optional. Administrators only. True, if the administrator can delete messages of other users
+// can_invite_users		Boolean	Optional. Administrators only. True, if the administrator can invite new users to the chat
+// can_restrict_members	Boolean	Optional. Administrators only. True, if the administrator can restrict, ban or unban chat members
+// can_pin_messages		Boolean	Optional. Administrators only. True, if the administrator can pin messages, supergroups only
+// can_promote_members	Boolean	Optional. Administrators only. True, if the administrator can add new administrators with a subset of his own
+//								privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)
+// can_send_messages	Boolean	Optional. Restricted only. True, if the user can send text messages, contacts, locations and venues
+// can_send_media_messages
+//						Boolean	Optional. Restricted only. True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
+// can_send_other_messages
+//						Boolean	Optional. Restricted only. True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
+// can_add_web_page_previews
+//						Boolean	Optional. Restricted only. True, if user may add web page previews to his messages, implies can_send_media_messages
 type ChatMember struct {
-	User   *User  `json:"user"`
-	Status string `json:"status"`
+	User                  *User  `json:"user"`
+	Status                string `json:"status"`
+	UntilDate             int64  `json:"until_date,omitempty"`
+	CanBeEdited           bool   `json:"can_be_edited,omitempty"`
+	CanChangeInfo         bool   `json:"can_change_info,omitempty"`
+	CanPostMessages       bool   `json:"can_post_messages,omitempty"`
+	CanEditMessages       bool   `json:"can_edit_messages,omitempty"`
+	CanDeleteMessages     bool   `json:"can_delete_messages,omitempty"`
+	CanInviteUsers        bool   `json:"can_invite_users,omitempty"`
+	CanRestrictMembers    bool   `json:"can_restrict_members,omitempty"`
+	CanPinMessages        bool   `json:"can_pin_messages,omitempty"`
+	CanPromoteMembers     bool   `json:"can_promote_members,omitempty"`
+	CanSendMessages       bool   `json:"can_send_messages,omitempty"`
+	CanSendMediaMessages  bool   `json:"can_send_media_messages,omitempty"`
+	CanSendOtherMessages  bool   `json:"can_send_other_messages,omitempty"`
+	CanAddWebPagePreviews bool   `json:"can_add_web_page_previews,omitempty"`
 }
 
 // ResponseParameters - Contains information about why a request was unsuccessfull.
