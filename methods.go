@@ -24,7 +24,6 @@ func (bot *Telebot) getMe() (User, error) {
 
 // SendMessage - "sendMessage" Use this method to send text messages. On success, the sent Message is returned.
 //
-// Parameters	Type	    Required	Description
 // chat_id	    Integer	    Yes	        Unique identifier for the target chat or username of the target channel
 //              or String				(in the format @channelusername)
 // text	        String	    Yes	        Text of the message to be sent
@@ -84,7 +83,7 @@ func (bot *Telebot) SendMessage(opt *SendMessageOpts) (Message, error) {
 	}
 	values.Set("chat_id", opt.ChatID)
 	values.Set("text", opt.Text)
-	if len(opt.ParseMode) > 0 {
+	if opt.ParseMode != "" {
 		values.Set("parse_mode", opt.ParseMode)
 	}
 	if opt.DisableWebPagePreview {
@@ -111,7 +110,6 @@ func (bot *Telebot) SendMessage(opt *SendMessageOpts) (Message, error) {
 // ForwardMessage - "forwardMessage" Use this method to forward messages of any kind. On success, the sent
 // Message is returned.
 //
-// Parameters	Type	    Required	Description
 // chat_id	    Integer or  Yes     	Unique identifier for the target chat or username of the target channel
 //              String					(in the format @channelusername)
 // from_chat_id	Integer or  Yes	        Unique identifier for the chat where the original message was sent (or
@@ -145,7 +143,6 @@ func (bot *Telebot) ForwardMessage(opt *ForwardMessageOpts) (Message, error) {
 
 // SendPhoto - "sendPhoto" Use this method to send photos. On success, the sent Message is returned.
 //
-// Parameters	Type	    Required	Description
 // chat_id	    Integer or  Yes	        Unique identifier for the target chat or username of the target channel
 //              String					(in the format @channelusername)
 // photo	InputFile or 	Yes			Photo to send. Pass a file_id as String to send a photo that exists on
@@ -170,7 +167,7 @@ func (bot *Telebot) SendPhoto(opt *SendPhotoOpts) (Message, error) {
 	}
 	values.Set("chat_id", opt.ChatID)
 	values.Set("photo", opt.Photo)
-	if len(opt.Caption) > 0 {
+	if opt.Caption != "" {
 		values.Set("caption", opt.Caption)
 	}
 	if opt.DisableNotification {
@@ -217,12 +214,47 @@ func (bot *Telebot) SendPhoto(opt *SendPhotoOpts) (Message, error) {
 //				or ReplyKeyboardMarkup	or to force a reply from the user.
 //				or ReplyKeyboardRemove
 //				or ForceReply
+func (bot *Telebot) SendAudio(opt *SendAudioOpt) (Message, error) {
+	values := url.Values{}
+	if opt.ChatID == "" || opt.Audio == "" {
+		return Message{}, ErrMissingParam
+	}
+	values.Set("chat_id", opt.ChatID)
+	values.Set("audio", opt.Audio)
+	if opt.Caption != "" {
+		values.Set("caption", opt.Caption)
+	}
+	if opt.Duration > 0 {
+		values.Set("duration", strconv.Itoa(opt.Duration))
+	}
+	if opt.Performer != "" {
+		values.Set("performer", opt.Performer)
+	}
+	if opt.Title != "" {
+		values.Set("title", opt.Title)
+	}
+	if opt.DisableNotification {
+		values.Set("disable_notification", "true")
+	}
+	if opt.ReplyToMessageID > 0 {
+		values.Set("reply_to_message_id", strconv.Itoa(opt.ReplyToMessageID))
+	}
+	r, err := bot.createResponse("SendAudio", values)
+	if err != nil {
+		errLog("SendAudio createResponse", err)
+	}
+	var message Message
+	err = json.Unmarshal(r.Result, &message)
+	if err != nil {
+		errLog("SendAudio Unmarshal", err)
+	}
+	return message, err
+}
 
 // sendDocument
 // Use this method to send general files. On success, the sent Message is returned. Bots can currently send files
 // of any type of up to 50 MB in size, this limit may be changed in the future.
 //
-// Parameters	Type		Required	Description
 // chat_id		Integer 	Yes			Unique identifier for the target chat or username of the target channel
 //				or String				(in the format @channelusername)
 // document		InputFile 	Yes			File to send. Pass a file_id as String to send a file that exists on the
@@ -240,6 +272,33 @@ func (bot *Telebot) SendPhoto(opt *SendPhotoOpts) (Message, error) {
 //				or ReplyKeyboardMarkup	or to force a reply from the user.
 //				or ReplyKeyboardRemove
 //				or ForceReply
+func (bot *Telebot) SendDocument(opt *SendDocumentOpt) (Message, error) {
+	values := url.Values{}
+	if opt.ChatID == "" || opt.Document == "" {
+		return Message{}, ErrMissingParam
+	}
+	values.Set("chat_id", opt.ChatID)
+	values.Set("document", opt.Document)
+	if opt.Caption != "" {
+		values.Set("caption", opt.Caption)
+	}
+	if opt.DisableNotification {
+		values.Set("disable_notification", "true")
+	}
+	if opt.ReplyToMessageID > 0 {
+		values.Set("reply_to_message_id", strconv.Itoa(opt.ReplyToMessageID))
+	}
+	r, err := bot.createResponse("SendDocument", values)
+	if err != nil {
+		errLog("SendDocument createResponse", err)
+	}
+	var message Message
+	err = json.Unmarshal(r.Result, &message)
+	if err != nil {
+		errLog("SendDocument Unmarshal", err)
+	}
+	return message, err
+}
 
 // sendSticker
 // Use this method to send .webp stickers. On success, the sent Message is returned.

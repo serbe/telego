@@ -52,3 +52,34 @@ type SetWebhookOpt struct {
 	MaxConnections int      `json:"max_connections,omitempty"`
 	AllowedUpdates []string `json:"allowed_updates,omitempty"`
 }
+
+// SendAudioOpt - options for SendAudio
+type SendAudioOpt struct {
+	ChatID              string `json:"chat_id"`
+	Audio               string `json:"audio"`
+	Caption             string `json:"caption,omitempty"`
+	Duration            int    `json:"duration,omitempty"`
+	Performer           string `json:"performer,omitempty"`
+	Title               string `json:"title,omitempty"`
+	DisableNotification bool   `json:"disable_notification,omitempty"`
+	ReplyToMessageID    int    `json:"reply_to_message_id,omitempty"`
+	// reply_markup				Optional	Additional interface options. A JSON-serialized object for an inline
+	//				InlineKeyboardMarkup	keyboard, custom reply keyboard, instructions to remove reply keyboard
+	//				or ReplyKeyboardMarkup	or to force a reply from the user.
+	//				or ReplyKeyboardRemove
+	//				or ForceReply
+}
+
+// SendDocumentOpt - options for sendDocument
+type SendDocumentOpt struct {
+	ChatID              string `json:"chat_id"`
+	Document            string `json:"document"`
+	Caption             string `json:"caption,omitempty"`
+	DisableNotification bool   `json:"disable_notification,omitempty"`
+	ReplyToMessageID    int    `json:"reply_to_message_id,omitempty"`
+	// reply_markup				Optional	Additional interface options. A JSON-serialized object for an inline
+	//				InlineKeyboardMarkup	keyboard, custom reply keyboard, instructions to remove reply keyboard
+	//				or ReplyKeyboardMarkup	or to force a reply from the user.
+	//				or ReplyKeyboardRemove
+	//				or ForceReply
+}
