@@ -158,7 +158,6 @@ func (t *Telebot) SetWebhook(URL string, opt *SetWebhookOpt) error {
 // WebhookInfo
 // Contains information about the current status of a webhook.
 //
-// Field					Type		Description
 // url						String		Webhook URL, may be empty if webhook is not set up
 // has_custom_certificate	Boolean		True, if a custom certificate was provided for webhook certificate checks
 // pending_update_count		Integer		Number of updates awaiting delivery
@@ -170,3 +169,41 @@ func (t *Telebot) SetWebhook(URL string, opt *SetWebhookOpt) error {
 //										webhook for update delivery
 // allowed_updates	Array of String		Optional. A list of update types the bot is subscribed to. Defaults to all
 //										update types
+func (t *Telebot) WebhookInfo(URL string, opt *WebhookInfoOpt) error {
+	if URL != "" {
+		return ErrMissingParam
+	}
+	values := url.Values{}
+	values.Set("url", URL)
+	if opt.HasCustomCertificate {
+		values.Set("has_custom_certificate", "true")
+	} else {
+		values.Set("has_custom_certificate", "true")
+	}
+	if opt.PendingUpdateCount > 0 {
+		values.Set("pending_update_count", strconv.Itoa(opt.PendingUpdateCount))
+	}
+	if opt.LastErrorDate > 0 {
+		values.Set("last_error_date", strconv.Itoa(opt.LastErrorDate))
+	}
+	if opt.LastErrorMessage != "" {
+		values.Set("last_error_message", opt.LastErrorMessage)
+	}
+	if opt.MaxConnections > 0 {
+		values.Set("max_connections", strconv.Itoa(opt.MaxConnections))
+	}
+	if len(opt.AllowedUpdates) > 0 {
+		values["allowed_updates"] = opt.AllowedUpdates
+	}
+	r, err := t.createResponse("webhookInfo", values)
+	if err != nil {
+		errLog("WebhookInfo createResponse", err)
+		return err
+	}
+	var result bool
+	err = json.Unmarshal(r.Result, &result)
+	if err != nil {
+		errLog("WebhookInfo Unmarshal", err)
+	}
+	return err
+}

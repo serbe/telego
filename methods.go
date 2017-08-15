@@ -300,16 +300,6 @@ func (bot *Telebot) SendDocument(opt *SendDocumentOpt) (Message, error) {
 	return message, err
 }
 
-// sendSticker
-// Use this method to send .webp stickers. On success, the sent Message is returned.
-//
-// Parameters	Type	Required	Description
-// chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-// sticker	InputFile or String	Yes	Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
-// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-// reply_to_message_id	Integer	Optional	If the message is a reply, ID of the original message
-// reply_markup	InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply	Optional	Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-
 // sendVideo
 // Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
 //

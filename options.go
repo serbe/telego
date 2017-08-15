@@ -53,6 +53,16 @@ type SetWebhookOpt struct {
 	AllowedUpdates []string `json:"allowed_updates,omitempty"`
 }
 
+// WebhookInfoOpt  - options for WebhookInfo
+type WebhookInfoOpt struct {
+	HasCustomCertificate bool     `json:"has_custom_certificate"`
+	PendingUpdateCount   int      `json:"pending_update_count"`
+	LastErrorDate        int      `json:"last_error_date,omitempty"`
+	LastErrorMessage     string   `json:"last_error_message,omitempty"`
+	MaxConnections       int      `json:"max_connections,omitempty"`
+	AllowedUpdates       []string `json:"allowed_updates,omitempty"`
+}
+
 // SendAudioOpt - options for SendAudio
 type SendAudioOpt struct {
 	ChatID              string `json:"chat_id"`
