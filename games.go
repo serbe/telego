@@ -8,7 +8,6 @@ import (
 
 // SendGame - "sendGame" Use this method to send a game. On success, the sent Message is returned.
 //
-// Parameters			Type	Required	Description
 // chat_id				Integer	Yes			Unique identifier for the target chat
 // game_short_name		String	Yes			Short name of the game, serves as the unique identifier for the game.
 //											Set up your games via Botfather.
@@ -18,28 +17,27 @@ import (
 // reply_markup					Optional	A JSON-serialized object for an inline keyboard. If empty, one ‘Play
 //				InlineKeyboardMarkup		game_title’ button will be shown. If not empty, the first button must
 //											launch the game.
-// func (bot *Telebot) SendGame(chatID int, gameShortName string, disableNotification bool, replyToMessageID int, replyMarkup InlineKeyboardMarkup) (Message, error) {
-func (bot *Telebot) SendGame(chatID int, gameShortName string, disableNotification bool, replyToMessageID int) (Message, error) {
+func (bot *Bot) SendGame(opt *SendGameOpt) (Message, error) {
 	values := url.Values{}
-	values.Set("chat_id", strconv.Itoa(chatID))
-	values.Set("game_short_name", gameShortName)
-	if disableNotification {
+	if opt.ChatID != "" || opt.GameShortName != "" {
+		return Message{}, ErrMissingParam
+	}
+	values.Set("chat_id", opt.ChatID)
+	values.Set("game_short_name", opt.GameShortName)
+	if opt.DisableNotification {
 		values.Set("disable_notification", "true")
 	}
-	if replyToMessageID > 0 {
-		values.Set("reply_to_message_id", strconv.Itoa(replyToMessageID))
+	if opt.ReplyToMessageID > 0 {
+		values.Set("reply_to_message_id", strconv.Itoa(opt.ReplyToMessageID))
 	}
-	// if replyMarkup != nil {
-
-	// }
 	r, err := bot.createResponse("sendGame", values)
 	if err != nil {
-		errLog("SendMessage createResponse", err)
+		errLog("SendGame createResponse", err)
 	}
 	var message Message
 	err = json.Unmarshal(r.Result, &message)
 	if err != nil {
-		errLog("SendMessage Unmarshal", err)
+		errLog("SendGame Unmarshal", err)
 	}
 	return message, err
 }
@@ -47,7 +45,6 @@ func (bot *Telebot) SendGame(chatID int, gameShortName string, disableNotificati
 // Game - This object represents a game. Use BotFather to create and edit games, their short names will act as
 // unique identifiers.
 //
-// Parameters	Type				Description
 // title	    String	    		Title of the game
 // description	String	    		Description of the game
 // photo	    Array of PhotoSize	Photo that will be displayed in the game message in chats.
@@ -70,7 +67,6 @@ type Game struct {
 // Animation - You can provide an animation for your game so that it looks stylish in chats (check out Lumberjack
 // for an example). This object represents an animation file to be displayed in the message containing a game.
 //
-// Parameters	Type		Description
 // file_id		String		Unique file identifier
 // thumb		PhotoSize	Optional. Animation thumbnail as defined by sender
 // file_name	String		Optional. Original animation filename as defined by sender
@@ -90,7 +86,6 @@ type CallbackGame struct{}
 // setGameScore
 // Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
 //
-// Parameters	Type	Required	Description
 // user_id	Integer	Yes	User identifier
 // score	Integer	Yes	New score, must be non-negative
 // force	Boolean	Optional	Pass True, if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters
@@ -103,7 +98,7 @@ type CallbackGame struct{}
 // Use this method to get data for high score tables. Will return the score of the specified user and several of his neighbors in a game. On success, returns an Array of GameHighScore objects.
 
 // This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
-// Parameters	Type	Required	Description
+//
 // user_id	Integer	Yes	Target user id
 // chat_id	Integer	Optional	Required if inline_message_id is not specified. Unique identifier for the target chat
 // message_id	Integer	Optional	Required if inline_message_id is not specified. Identifier of the sent message
@@ -111,7 +106,6 @@ type CallbackGame struct{}
 
 // GameHighScore - This object represents one row of the high scores table for a game.
 //
-// Parameters	Type		Description
 // position		Integer		Position in high score table for the game
 // user	    	User		User
 // score		Integer		Score

@@ -15,7 +15,7 @@ var (
 	ErrForbiddenHTTP = errors.New("Forbidden http")
 )
 
-func (bot *Telebot) createResponse(method string, values url.Values) (Response, error) {
+func (bot *Bot) createResponse(method string, values url.Values) (Response, error) {
 	fullURL := urlAPI + bot.Token + "/" + method
 	resp, err := bot.Client.PostForm(fullURL, values)
 	if err != nil {

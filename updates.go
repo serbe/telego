@@ -9,7 +9,6 @@ import (
 // Update - This object represents an incoming update.
 // At most one of the optional parameters can be present in any given update.
 //
-// Field				Type				Description
 // update_id			Integer				The update‘s unique identifier. Update identifiers start from a certain
 //											positive number and increase sequentially. This ID becomes especially
 //											handy if you’re using Webhooks, since it allows you to ignore repeated
@@ -26,7 +25,7 @@ import (
 // shipping_query		ShippingQuery		Optional. New incoming shipping query. Only for invoices with flexible price
 // pre_checkout_query	PreCheckoutQuery	Optional. New incoming pre-checkout query. Contains full information about checkout
 type Update struct {
-	UpdateID           int64               `json:"update_id"`
+	UpdateID           int                 `json:"update_id"`
 	Message            *Message            `json:"message,omitempty"`
 	EditedMessage      *Message            `json:"edited_message,omitempty"`
 	ChannelPost        *Message            `json:"channel_post,omitempty"`
@@ -41,7 +40,6 @@ type Update struct {
 // GetUpdates - "getUpdates" Use this method to receive incoming updates using long polling (wiki). An Array of
 // Update objects is returned.
 //
-// Parameters		Type			Required	Description
 // offset			Integer			Optional	Identifier of the first update to be returned. Must be greater by
 //												one than the highest among the identifiers of previously received
 //												updates. By default, updates starting with the earliest unconfirmed
@@ -66,7 +64,7 @@ type Update struct {
 // Notes
 // 1. This method will not work if an outgoing webhook is set up.
 // 2. In order to avoid getting duplicate updates, recalculate offset after each server response.
-func (t *Telebot) GetUpdates(opt *GetUpdatesOpt) ([]Update, error) {
+func (t *Bot) GetUpdates(opt *GetUpdatesOpt) ([]Update, error) {
 	values := url.Values{}
 	if opt.Offset != 0 {
 		values.Set("offset", strconv.Itoa(opt.Offset))
@@ -106,7 +104,6 @@ func (t *Telebot) GetUpdates(opt *GetUpdatesOpt) ([]Update, error) {
 // the URL, e.g. https://www.example.com/<token>. Since nobody else knows your bot‘s token, you can be pretty
 // sure it’s us.
 //
-// Parameters		Type		Required	Description
 // url				String		Yes			HTTPS url to send updates to. Use an empty string to remove webhook
 // 											integration
 // certificate		InputFile	Optional	Upload your public key certificate so that the root certificate in
@@ -124,9 +121,12 @@ func (t *Telebot) GetUpdates(opt *GetUpdatesOpt) ([]Update, error) {
 //
 // Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted
 // updates may be received for a short period of time.
-func (t *Telebot) SetWebhook(URL string, opt *SetWebhookOpt) error {
+func (t *Bot) SetWebhook(opt *SetWebhookOpt) error {
+	if opt.URL != "" {
+		return ErrMissingParam
+	}
 	values := url.Values{}
-	values.Set("url", URL)
+	values.Set("url", opt.URL)
 	if opt.Certificate != "" {
 		values.Set("certificate", opt.Certificate)
 	}
@@ -169,20 +169,18 @@ func (t *Telebot) SetWebhook(URL string, opt *SetWebhookOpt) error {
 //										webhook for update delivery
 // allowed_updates	Array of String		Optional. A list of update types the bot is subscribed to. Defaults to all
 //										update types
-func (t *Telebot) WebhookInfo(URL string, opt *WebhookInfoOpt) error {
-	if URL != "" {
+func (t *Bot) WebhookInfo(opt *WebhookInfoOpt) error {
+	if opt.URL != "" || opt.PendingUpdateCount == 0 {
 		return ErrMissingParam
 	}
 	values := url.Values{}
-	values.Set("url", URL)
+	values.Set("url", opt.URL)
 	if opt.HasCustomCertificate {
 		values.Set("has_custom_certificate", "true")
 	} else {
 		values.Set("has_custom_certificate", "true")
 	}
-	if opt.PendingUpdateCount > 0 {
-		values.Set("pending_update_count", strconv.Itoa(opt.PendingUpdateCount))
-	}
+	values.Set("pending_update_count", strconv.Itoa(opt.PendingUpdateCount))
 	if opt.LastErrorDate > 0 {
 		values.Set("last_error_date", strconv.Itoa(opt.LastErrorDate))
 	}

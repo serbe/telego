@@ -3,7 +3,6 @@ package telego
 // InlineQuery - This object represents an incoming inline query. When the user sends an empty query, your bot
 // could return some default or trending results.
 //
-// Field	Type		Description
 // id		String		Unique identifier for this query
 // from		User		Sender
 // location	Location	Optional. Sender location, only for bots that request user location
@@ -20,7 +19,7 @@ type InlineQuery struct {
 // answerInlineQuery
 // Use this method to send answers to an inline query. On success, True is returned.
 // No more than 50 results per query are allowed.
-//
+
 // Parameters	Type	Required	Description
 // inline_query_id	String	Yes	Unique identifier for the answered query
 // results	Array of InlineQueryResult	Yes	A JSON-serialized array of results for the inline query
@@ -29,12 +28,11 @@ type InlineQuery struct {
 // next_offset	String	Optional	Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don‘t support pagination. Offset length can’t exceed 64 bytes.
 // switch_pm_text	String	Optional	If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter
 // switch_pm_parameter	String	Optional	Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.
-//
-// Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a ‘Connect your YouTube account’ button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
 
+// Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a ‘Connect your YouTube account’ button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
 // InlineQueryResult
 // This object represents one result of an inline query. Telegram clients currently support results of the following 20 types:
-//
+
 // InlineQueryResultCachedAudio
 // InlineQueryResultCachedDocument
 // InlineQueryResultCachedGif
@@ -57,7 +55,7 @@ type InlineQuery struct {
 // InlineQueryResultVoice
 // InlineQueryResultArticle
 // Represents a link to an article or web page.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be article
 // id	String	Unique identifier for this result, 1-64 Bytes
@@ -70,10 +68,9 @@ type InlineQuery struct {
 // thumb_url	String	Optional. Url of the thumbnail for the result
 // thumb_width	Integer	Optional. Thumbnail width
 // thumb_height	Integer	Optional. Thumbnail height
-
 // InlineQueryResultPhoto
 // Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be photo
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -86,40 +83,40 @@ type InlineQuery struct {
 // caption	String	Optional. Caption of the photo to be sent, 0-200 characters
 // reply_markup	InlineKeyboardMarkup	Optional. Inline keyboard attached to the message
 // input_message_content	InputMessageContent	Optional. Content of the message to be sent instead of the photo
-
 // InlineQueryResultGif
 // Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be gif
 // id	String	Unique identifier for this result, 1-64 bytes
 // gif_url	String	A valid URL for the GIF file. File size must not exceed 1MB
 // gif_width	Integer	Optional. Width of the GIF
 // gif_height	Integer	Optional. Height of the GIF
+// gif_duration	Integer	Optional. Duration of the GIF
 // thumb_url	String	URL of the static thumbnail for the result (jpeg or gif)
 // title	String	Optional. Title for the result
 // caption	String	Optional. Caption of the GIF file to be sent, 0-200 characters
 // reply_markup	InlineKeyboardMarkup	Optional. Inline keyboard attached to the message
 // input_message_content	InputMessageContent	Optional. Content of the message to be sent instead of the GIF animation
-
 // InlineQueryResultMpeg4Gif
 // Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be mpeg4_gif
 // id	String	Unique identifier for this result, 1-64 bytes
 // mpeg4_url	String	A valid URL for the MP4 file. File size must not exceed 1MB
 // mpeg4_width	Integer	Optional. Video width
 // mpeg4_height	Integer	Optional. Video height
+// mpeg4_duration	Integer	Optional. Video duration
 // thumb_url	String	URL of the static thumbnail (jpeg or gif) for the result
 // title	String	Optional. Title for the result
 // caption	String	Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
 // reply_markup	InlineKeyboardMarkup	Optional. Inline keyboard attached to the message
 // input_message_content	InputMessageContent	Optional. Content of the message to be sent instead of the video animation
-
 // InlineQueryResultVideo
 // Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
-//
+
+// If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube), you must replace its content using input_message_content.
 // Field	Type	Description
 // type	String	Type of the result, must be video
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -133,11 +130,10 @@ type InlineQuery struct {
 // video_duration	Integer	Optional. Video duration in seconds
 // description	String	Optional. Short description of the result
 // reply_markup	InlineKeyboardMarkup	Optional. Inline keyboard attached to the message
-// input_message_content	InputMessageContent	Optional. Content of the message to be sent instead of the video
-
+// input_message_content	InputMessageContent	Optional. Content of the message to be sent instead of the video. This field is required if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).
 // InlineQueryResultAudio
 // Represents a link to an mp3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be audio
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -152,7 +148,7 @@ type InlineQuery struct {
 
 // InlineQueryResultVoice
 // Represents a link to a voice recording in an .ogg container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be voice
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -166,7 +162,7 @@ type InlineQuery struct {
 
 // InlineQueryResultDocument
 // Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file. Currently, only .PDF and .ZIP files can be sent using this method.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be document
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -184,7 +180,7 @@ type InlineQuery struct {
 
 // InlineQueryResultLocation
 // Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the location.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be location
 // id	String	Unique identifier for this result, 1-64 Bytes
@@ -200,7 +196,7 @@ type InlineQuery struct {
 
 // InlineQueryResultVenue
 // Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be venue
 // id	String	Unique identifier for this result, 1-64 Bytes
@@ -218,7 +214,7 @@ type InlineQuery struct {
 
 // InlineQueryResultContact
 // Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be contact
 // id	String	Unique identifier for this result, 1-64 Bytes
@@ -234,7 +230,7 @@ type InlineQuery struct {
 
 // InlineQueryResultGame
 // Represents a Game.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be game
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -244,7 +240,7 @@ type InlineQuery struct {
 
 // InlineQueryResultCachedPhoto
 // Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be photo
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -254,10 +250,9 @@ type InlineQuery struct {
 // caption	String	Optional. Caption of the photo to be sent, 0-200 characters
 // reply_markup	InlineKeyboardMarkup	Optional. Inline keyboard attached to the message
 // input_message_content	InputMessageContent	Optional. Content of the message to be sent instead of the photo
-
 // InlineQueryResultCachedGif
 // Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be gif
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -266,10 +261,9 @@ type InlineQuery struct {
 // caption	String	Optional. Caption of the GIF file to be sent, 0-200 characters
 // reply_markup	InlineKeyboardMarkup	Optional. Inline keyboard attached to the message
 // input_message_content	InputMessageContent	Optional. Content of the message to be sent instead of the GIF animation
-
 // InlineQueryResultCachedMpeg4Gif
 // Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be mpeg4_gif
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -278,10 +272,9 @@ type InlineQuery struct {
 // caption	String	Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
 // reply_markup	InlineKeyboardMarkup	Optional. Inline keyboard attached to the message
 // input_message_content	InputMessageContent	Optional. Content of the message to be sent instead of the video animation
-
 // InlineQueryResultCachedSticker
 // Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the sticker.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be sticker
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -292,7 +285,7 @@ type InlineQuery struct {
 
 // InlineQueryResultCachedDocument
 // Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be document
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -306,7 +299,7 @@ type InlineQuery struct {
 
 // InlineQueryResultCachedVideo
 // Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be video
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -316,10 +309,9 @@ type InlineQuery struct {
 // caption	String	Optional. Caption of the video to be sent, 0-200 characters
 // reply_markup	InlineKeyboardMarkup	Optional. Inline keyboard attached to the message
 // input_message_content	InputMessageContent	Optional. Content of the message to be sent instead of the video
-
 // InlineQueryResultCachedVoice
 // Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be voice
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -332,7 +324,7 @@ type InlineQuery struct {
 
 // InlineQueryResultCachedAudio
 // Represents a link to an mp3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
-//
+
 // Field	Type	Description
 // type	String	Type of the result, must be audio
 // id	String	Unique identifier for this result, 1-64 bytes
@@ -344,22 +336,21 @@ type InlineQuery struct {
 
 // InputMessageContent
 // This object represents the content of a message to be sent as a result of an inline query. Telegram clients currently support the following 4 types:
-//
+
 // InputTextMessageContent
 // InputLocationMessageContent
 // InputVenueMessageContent
 // InputContactMessageContent
 // InputTextMessageContent
 // Represents the content of a text message to be sent as the result of an inline query.
-//
+
 // Field	Type	Description
 // message_text	String	Text of the message to be sent, 1-4096 characters
 // parse_mode	String	Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
 // disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message
-
 // InputLocationMessageContent
 // Represents the content of a location message to be sent as the result of an inline query.
-//
+
 // Field	Type	Description
 // latitude	Float	Latitude of the location in degrees
 // longitude	Float	Longitude of the location in degrees
@@ -367,7 +358,7 @@ type InlineQuery struct {
 
 // InputVenueMessageContent
 // Represents the content of a venue message to be sent as the result of an inline query.
-//
+
 // Field	Type	Description
 // latitude	Float	Latitude of the venue in degrees
 // longitude	Float	Longitude of the venue in degrees
@@ -378,7 +369,7 @@ type InlineQuery struct {
 
 // InputContactMessageContent
 // Represents the content of a contact message to be sent as the result of an inline query.
-//
+
 // Field	Type	Description
 // phone_number	String	Contact's phone number
 // first_name	String	Contact's first name
@@ -388,7 +379,6 @@ type InlineQuery struct {
 // ChosenInlineResult - Represents a result of an inline query that was chosen by the user and sent to their
 // chat partner.
 //
-// Field				Type		Description
 // result_id			String		The unique identifier for the result that was chosen
 // from					User		The user that chose the result
 // location				Location	Optional. Sender location, only for bots that require user location

@@ -8,7 +8,7 @@ import (
 
 // getMe - A simple method for testing your bot's auth token. Requires no parameters. Returns basic information
 // about the bot in form of a User object.
-func (bot *Telebot) getMe() (User, error) {
+func (bot *Bot) getMe() (User, error) {
 	r, err := bot.createResponse("getMe", nil)
 	if err != nil {
 		errLog("getMe createResponse", err)
@@ -76,7 +76,7 @@ func (bot *Telebot) getMe() (User, error) {
 // entities (< with &lt;, > with &gt; and & with &amp;).
 // All numerical HTML entities are supported.
 // The API currently supports only the following named HTML entities: &lt;, &gt;, &amp; and &quot;.
-func (bot *Telebot) SendMessage(opt *SendMessageOpts) (Message, error) {
+func (bot *Bot) SendMessage(opt *SendMessageOpts) (Message, error) {
 	values := url.Values{}
 	if opt.ChatID == "" || opt.Text == "" {
 		return Message{}, ErrMissingParam
@@ -110,15 +110,15 @@ func (bot *Telebot) SendMessage(opt *SendMessageOpts) (Message, error) {
 // ForwardMessage - "forwardMessage" Use this method to forward messages of any kind. On success, the sent
 // Message is returned.
 //
-// chat_id	    Integer or  Yes     	Unique identifier for the target chat or username of the target channel
-//              String					(in the format @channelusername)
-// from_chat_id	Integer or  Yes	        Unique identifier for the chat where the original message was sent (or
-//              String					channel username in the format @channelusername)
+// chat_id	    Integer   	Yes     	Unique identifier for the target chat or username of the target channel
+//              or String				(in the format @channelusername)
+// from_chat_id	Integer 	Yes	        Unique identifier for the chat where the original message was sent (or
+//              or String				channel username in the format @channelusername)
 // disable_notification
 //          	Boolean	    Optional	Sends the message silently. iOS users will not receive a notification,
 //										Android users will receive a notification with no sound.
 // message_id	Integer	    Yes	        Message identifier in the chat specified in from_chat_id
-func (bot *Telebot) ForwardMessage(opt *ForwardMessageOpts) (Message, error) {
+func (bot *Bot) ForwardMessage(opt *ForwardMessageOpts) (Message, error) {
 	values := url.Values{}
 	if opt.ChatID == "" || opt.FromChatID == "" || opt.MessageID == 0 {
 		return Message{}, ErrMissingParam
@@ -160,7 +160,7 @@ func (bot *Telebot) ForwardMessage(opt *ForwardMessageOpts) (Message, error) {
 //				ReplyKeyboardMarkup or  or to force a reply from the user.
 //				ReplyKeyboardRemove or
 //				ForceReply
-func (bot *Telebot) SendPhoto(opt *SendPhotoOpts) (Message, error) {
+func (bot *Bot) SendPhoto(opt *SendPhotoOpts) (Message, error) {
 	values := url.Values{}
 	if opt.ChatID == "" || opt.Photo == "" {
 		return Message{}, ErrMissingParam
@@ -194,7 +194,6 @@ func (bot *Telebot) SendPhoto(opt *SendPhotoOpts) (Message, error) {
 // to 50 MB in size, this limit may be changed in the future.
 // For sending voice messages, use the sendVoice method instead.
 //
-// Parameters	Type		Required	Description
 // chat_id		Integer 	Yes			Unique identifier for the target chat or username of the target channel (in
 //				or String				the format @channelusername)
 // audio		InputFile 	Yes			Audio file to send. Pass a file_id as String to send an audio file that
@@ -214,7 +213,7 @@ func (bot *Telebot) SendPhoto(opt *SendPhotoOpts) (Message, error) {
 //				or ReplyKeyboardMarkup	or to force a reply from the user.
 //				or ReplyKeyboardRemove
 //				or ForceReply
-func (bot *Telebot) SendAudio(opt *SendAudioOpt) (Message, error) {
+func (bot *Bot) SendAudio(opt *SendAudioOpt) (Message, error) {
 	values := url.Values{}
 	if opt.ChatID == "" || opt.Audio == "" {
 		return Message{}, ErrMissingParam
@@ -272,7 +271,7 @@ func (bot *Telebot) SendAudio(opt *SendAudioOpt) (Message, error) {
 //				or ReplyKeyboardMarkup	or to force a reply from the user.
 //				or ReplyKeyboardRemove
 //				or ForceReply
-func (bot *Telebot) SendDocument(opt *SendDocumentOpt) (Message, error) {
+func (bot *Bot) SendDocument(opt *SendDocumentOpt) (Message, error) {
 	values := url.Values{}
 	if opt.ChatID == "" || opt.Document == "" {
 		return Message{}, ErrMissingParam
@@ -300,83 +299,280 @@ func (bot *Telebot) SendDocument(opt *SendDocumentOpt) (Message, error) {
 	return message, err
 }
 
-// sendVideo
-// Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
+// SendVideo - Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as
+// Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size,
+// this limit may be changed in the future.
 //
-// Parameters	Type	Required	Description
-// chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-// video	InputFile or String	Yes	Video to send. Pass a file_id as String to send a video that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a video from the Internet, or upload a new video using multipart/form-data. More info on Sending Files »
-// duration	Integer	Optional	Duration of sent video in seconds
-// width	Integer	Optional	Video width
-// height	Integer	Optional	Video height
-// caption	String	Optional	Video caption (may also be used when resending videos by file_id), 0-200 characters
-// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+// chat_id	Integer or String	Yes			Unique identifier for the target chat or username of the target
+//											channel (in the format @channelusername)
+// video	InputFile or String	Yes			Video to send. Pass a file_id as String to send a video that
+//											exists on the Telegram servers (recommended), pass an HTTP URL as a
+//											String for Telegram to get a video from the Internet, or upload a new
+//											video using multipart/form-data. More info on Sending Files »
+// duration				Integer	Optional	Duration of sent video in seconds
+// width				Integer	Optional	Video width
+// height				Integer	Optional	Video height
+// caption				String	Optional	Video caption (may also be used when resending videos by file_id), 0-200 characters
+// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification, Android
+//											users will receive a notification with no sound.
 // reply_to_message_id	Integer	Optional	If the message is a reply, ID of the original message
-// reply_markup	InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply	Optional	Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+// reply_markup					Optional	Additional interface options. A JSON-serialized object for an inline keyboard,
+//			InlineKeyboardMarkup 			custom reply keyboard, instructions to remove reply keyboard or to force a
+//			or ReplyKeyboardMarkup			reply from the user.
+//			or ReplyKeyboardRemove
+//			or ForceReply
+func (bot *Bot) SendVideo(opt *SendVideoOpt) (Message, error) {
+	values := url.Values{}
+	if opt.ChatID == "" || opt.Video == "" {
+		return Message{}, ErrMissingParam
+	}
+	values.Set("chat_id", opt.ChatID)
+	values.Set("video", opt.Video)
+	if opt.Duration > 0 {
+		values.Set("duration", strconv.Itoa(opt.Duration))
+	}
+	if opt.Width > 0 {
+		values.Set("width", strconv.Itoa(opt.Width))
+	}
+	if opt.Height > 0 {
+		values.Set("height", strconv.Itoa(opt.Height))
+	}
+	if opt.Caption != "" {
+		values.Set("caption", opt.Caption)
+	}
+	if opt.DisableNotification {
+		values.Set("disable_notification", "true")
+	}
+	if opt.ReplyToMessageID > 0 {
+		values.Set("reply_to_message_id", strconv.Itoa(opt.ReplyToMessageID))
+	}
+	r, err := bot.createResponse("SendDocument", values)
+	if err != nil {
+		errLog("SendDocument createResponse", err)
+	}
+	var message Message
+	err = json.Unmarshal(r.Result, &message)
+	if err != nil {
+		errLog("SendDocument Unmarshal", err)
+	}
+	return message, err
+}
 
-// sendVoice
-// Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+// SendVoice - Use this method to send audio files, if you want Telegram clients to display the file as a
+// playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other
+// formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently
+// send voice messages of up to 50 MB in size, this limit may be changed in the future.
 //
-// Parameters	Type	Required	Description
-// chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-// voice	InputFile or String	Yes	Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
-// caption	String	Optional	Voice message caption, 0-200 characters
-// duration	Integer	Optional	Duration of the voice message in seconds
-// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+// chat_id				Integer Yes			Unique identifier for the target chat or username of the target
+//					  or String				channel (in the format @channelusername)
+// voice			  InputFile Yes			Audio file to send. Pass a file_id as String to send a file that
+//                    or String				exists on the Telegram servers (recommended), pass an HTTP URL
+//											as a String for Telegram to get a file from the Internet, or
+//											upload a new one using multipart/form-data. More info on Sending Files »
+// caption				String	Optional	Voice message caption, 0-200 characters
+// duration				Integer	Optional	Duration of the voice message in seconds
+// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification,
+//											Android users will receive a notification with no sound.
 // reply_to_message_id	Integer	Optional	If the message is a reply, ID of the original message
-// reply_markup	InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply	Optional	Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+// reply_markup					Optional	Additional interface options. A JSON-serialized object for an
+//			InlineKeyboardMarkup 			inline keyboard, custom reply keyboard, instructions to remove
+//			or ReplyKeyboardMarkup			reply keyboard or to force a reply from the user.
+//			or ReplyKeyboardRemove
+//			or ForceReply
+func (bot *Bot) SendVoice(opt *SendVoiceOpt) (Message, error) {
+	values := url.Values{}
+	if opt.ChatID == "" || opt.Voice == "" {
+		return Message{}, ErrMissingParam
+	}
+	values.Set("chat_id", opt.ChatID)
+	values.Set("voice", opt.Voice)
+	if opt.Caption != "" {
+		values.Set("caption", opt.Caption)
+	}
+	if opt.Duration > 0 {
+		values.Set("duration", strconv.Itoa(opt.Duration))
+	}
+	if opt.DisableNotification {
+		values.Set("disable_notification", "true")
+	}
+	if opt.ReplyToMessageID > 0 {
+		values.Set("reply_to_message_id", strconv.Itoa(opt.ReplyToMessageID))
+	}
+	r, err := bot.createResponse("SendDocument", values)
+	if err != nil {
+		errLog("SendDocument createResponse", err)
+	}
+	var message Message
+	err = json.Unmarshal(r.Result, &message)
+	if err != nil {
+		errLog("SendDocument Unmarshal", err)
+	}
+	return message, err
+}
 
-// sendLocation
-// Use this method to send point on the map. On success, the sent Message is returned.
+// SendVideoNote - As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long.
+// Use this method to send video messages. On success, the sent Message is returned.
 //
-// Parameters	Type	Required	Description
-// chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-// latitude	Float number	Yes	Latitude of location
-// longitude	Float number	Yes	Longitude of location
-// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-// reply_to_message_id	Integer	Optional	If the message is a reply, ID of the original message
-// reply_markup	InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply	Optional	Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+// chat_id				Integer 	Yes			Unique identifier for the target chat or username of the
+//						or String				target channel (in the format @channelusername)
+// video_note			InputFile 	Yes			Video note to send. Pass a file_id as String to send a video
+//						or String				note that exists on the Telegram servers (recommended) or
+//												upload a new video using multipart/form-data. More info on
+//												Sending Files ». Sending video notes by a URL is currently unsupported
+// duration				Integer		Optional	Duration of sent video in seconds
+// length				Integer		Optional	Video width and height
+// disable_notification	Boolean		Optional	Sends the message silently. Users will receive a notification with no sound.
+// reply_to_message_id	Integer		Optional	If the message is a reply, ID of the original message
+// reply_markup	InlineKeyboardMarkup Optional	Additional interface options. A JSON-serialized object for an inline
+//				or ReplyKeyboardMarkup 			keyboard, custom reply keyboard, instructions to remove reply
+//				or ReplyKeyboardRemove 			keyboard or to force a reply from the user.
+//				or ForceReply
+func (bot *Bot) SendVideoNote(opt *SendVideoNoteOpt) (Message, error) {
+	values := url.Values{}
+	if opt.ChatID == "" || opt.VideoNote == "" {
+		return Message{}, ErrMissingParam
+	}
+	values.Set("chat_id", opt.ChatID)
+	values.Set("video_note", opt.VideoNote)
+	if opt.Duration > 0 {
+		values.Set("duration", strconv.Itoa(opt.Duration))
+	}
+	if opt.Length > 0 {
+		values.Set("length", strconv.Itoa(opt.Length))
+	}
+	if opt.DisableNotification {
+		values.Set("disable_notification", "true")
+	}
+	if opt.ReplyToMessageID > 0 {
+		values.Set("reply_to_message_id", strconv.Itoa(opt.ReplyToMessageID))
+	}
+	r, err := bot.createResponse("SendDocument", values)
+	if err != nil {
+		errLog("SendDocument createResponse", err)
+	}
+	var message Message
+	err = json.Unmarshal(r.Result, &message)
+	if err != nil {
+		errLog("SendDocument Unmarshal", err)
+	}
+	return message, err
+}
 
-// sendVenue
-// Use this method to send information about a venue. On success, the sent Message is returned.
+// SendLocation - Use this method to send point on the map. On success, the sent Message is returned.
 //
-// Parameters	Type	Required	Description
-// chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-// latitude	Float number	Yes	Latitude of the venue
-// longitude	Float number	Yes	Longitude of the venue
-// title	String	Yes	Name of the venue
-// address	String	Yes	Address of the venue
-// foursquare_id	String	Optional	Foursquare identifier of the venue
-// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+// chat_id				Integer	Yes			Unique identifier for the target chat or username of the target
+//											channel (in the format @channelusername)
+// latitude				Float	Yes			Latitude of location
+// longitude			Float	Yes			Longitude of location
+// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification,
+//											Android users will receive a notification with no sound.
 // reply_to_message_id	Integer	Optional	If the message is a reply, ID of the original message
-// reply_markup	InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply	Optional	Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+// reply_markup		InlineKeyboardMarkup 	Additional interface options. A JSON-serialized object for an inline
+//				or ReplyKeyboardMarkup 		keyboard, custom reply keyboard, instructions to remove reply keyboard
+//				or ReplyKeyboardRemove 		or to force a reply from the user.
+//				or ForceReply	Optional
+func (bot *Bot) SendLocation(opt *SendLocationOpt) (Message, error) {
+	values := url.Values{}
+	if opt.ChatID == "" || opt.Latitude == 0 || opt.Longitude == 0 {
+		return Message{}, ErrMissingParam
+	}
+	values.Set("chat_id", opt.ChatID)
+	values.Set("latitude", strconv.FormatFloat(opt.Latitude, 'f', -1, 64))
+	values.Set("longitude", strconv.FormatFloat(opt.Longitude, 'f', -1, 64))
+	if opt.DisableNotification {
+		values.Set("disable_notification", "true")
+	}
+	if opt.ReplyToMessageID > 0 {
+		values.Set("reply_to_message_id", strconv.Itoa(opt.ReplyToMessageID))
+	}
+	r, err := bot.createResponse("SendDocument", values)
+	if err != nil {
+		errLog("SendDocument createResponse", err)
+	}
+	var message Message
+	err = json.Unmarshal(r.Result, &message)
+	if err != nil {
+		errLog("SendDocument Unmarshal", err)
+	}
+	return message, err
+}
 
-// sendContact
-// Use this method to send phone contacts. On success, the sent Message is returned.
+// SendVenue - Use this method to send information about a venue. On success, the sent Message is returned.
 //
-// Parameters	Type	Required	Description
-// chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-// phone_number	String	Yes	Contact's phone number
-// first_name	String	Yes	Contact's first name
-// last_name	String	Optional	Contact's last name
-// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+// chat_id				Integer Yes			Unique identifier for the target chat or username of the
+//						or String			target channel (in the format @channelusername)
+// latitude				Float 	Yes			Latitude of the venue
+// longitude			Float 	Yes			Longitude of the venue
+// title				String	Yes			Name of the venue
+// address				String	Yes			Address of the venue
+// foursquare_id		String	Optional	Foursquare identifier of the venue
+// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a
+//											notification, Android users will receive a notification with no sound.
 // reply_to_message_id	Integer	Optional	If the message is a reply, ID of the original message
-// reply_markup	InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply	Optional	Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
+// reply_markup	InlineKeyboardMarkup 		Additional interface options. A JSON-serialized object for an
+//				or ReplyKeyboardMarkup 		inline keyboard, custom reply keyboard, instructions to remove
+//				or ReplyKeyboardRemove 		reply keyboard or to force a reply from the user.
+//				or ForceReply	Optional
+func (bot *Bot) SendVenue(opt *SendVenueOpt) (Message, error) {
+	values := url.Values{}
+	if opt.ChatID == "" || opt.Latitude == 0 || opt.Longitude == 0 || opt.Title != "" || opt.Address != "" {
+		return Message{}, ErrMissingParam
+	}
+	values.Set("chat_id", opt.ChatID)
+	values.Set("latitude", strconv.FormatFloat(opt.Latitude, 'f', -1, 64))
+	values.Set("longitude", strconv.FormatFloat(opt.Longitude, 'f', -1, 64))
+	values.Set("title", opt.Title)
+	values.Set("address", opt.Address)
+	if opt.FoursquareID != "" {
+		values.Set("foursquare_id", opt.FoursquareID)
+	}
+	if opt.DisableNotification {
+		values.Set("disable_notification", "true")
+	}
+	if opt.ReplyToMessageID > 0 {
+		values.Set("reply_to_message_id", strconv.Itoa(opt.ReplyToMessageID))
+	}
+	r, err := bot.createResponse("SendDocument", values)
+	if err != nil {
+		errLog("SendDocument createResponse", err)
+	}
+	var message Message
+	err = json.Unmarshal(r.Result, &message)
+	if err != nil {
+		errLog("SendDocument Unmarshal", err)
+	}
+	return message, err
+}
 
-// sendChatAction
-// Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns True on success.
+// SendContact - Use this method to send phone contacts. On success, the sent Message is returned.
+//
+// chat_id				Integer Yes			Unique identifier for the target chat or username of the
+//						or String			target channel (in the format @channelusername)
+// phone_number			String	Yes			Contact's phone number
+// first_name			String	Yes			Contact's first name
+// last_name			String	Optional	Contact's last name
+// disable_notification	Boolean	Optional	Sends the message silently. iOS users will not receive a
+//											notification, Android users will receive a notification with no sound.
+// reply_to_message_id	Integer	Optional	If the message is a reply, ID of the original message
+// reply_markup					Optional	Additional interface options. A JSON-serialized object for an inline
+//		InlineKeyboardMarkup 				keyboard, custom reply keyboard, instructions to remove keyboard or
+//		or ReplyKeyboardMarkup 				to force a reply from the user.
+//		or ReplyKeyboardRemove
+//		or ForceReply
+
+// SendChatAction - Use this method when you need to tell the user that something is happening on the
+// bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram
+// clients clear its typing status). Returns True on success.
 //
 // Example: The ImageBot needs some time to process a request and upload the image. Instead of sending a text message along the lines of “Retrieving image, please wait…”, the bot may use sendChatAction with action = upload_photo. The user will see a “sending photo” status for the bot.
 // We only recommend using this method when a response from the bot will take a noticeable amount of time to arrive.
 //
-// Parameters	Type	Required	Description
 // chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
 // action	String	Yes	Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location data.
 
 // getUserProfilePhotos
 // Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
 //
-// Parameters	Type	Required	Description
 // user_id	Integer	Yes	Unique identifier of the target user
 // offset	Integer	Optional	Sequential number of the first photo to be returned. By default, all photos are returned.
 // limit	Integer	Optional	Limits the number of photos to be retrieved. Values between 1—100 are accepted. Defaults to 100.
@@ -384,7 +580,6 @@ func (bot *Telebot) SendDocument(opt *SendDocumentOpt) (Message, error) {
 // getFile
 // Use this method to get basic info about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size. On success, a File object is returned. The file can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where <file_path> is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.
 //
-// Parameters	Type	Required	Description
 // file_id	String	Yes	File identifier to get info about
 // Note: This function may not preserve the original file name and MIME type. You should save the file's MIME type and name (if available) when the File object is received.
 
@@ -392,16 +587,15 @@ func (bot *Telebot) SendDocument(opt *SendDocumentOpt) (Message, error) {
 // Use this method to kick a user from a group or a supergroup. In the case of supergroups, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the group for this to work. Returns True on success.
 //
 // Note: This will method only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group's creator or by the member that added them.
-// Parameters	Type	Required	Description
+//
 // chat_id	Integer or String	Yes	Unique identifier for the target group or username of the target supergroup (in the format @supergroupusername)
 // user_id	Integer	Yes	Unique identifier of the target user
 
 // LeaveChat - "leaveChat" Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
 //
-// Parameters	Type		Required	Description
 // chat_id		Integer or 	Yes			Unique identifier for the target chat or username of the target supergroup
 // 				String					or channel (in the format @channelusername)
-func (bot *Telebot) LeaveChat(chatID string) (bool, error) {
+func (bot *Bot) LeaveChat(chatID string) (bool, error) {
 	values := url.Values{}
 	values["chat_id"] = []string{chatID}
 	r, err := bot.createResponse("leaveChat", values)
@@ -419,32 +613,27 @@ func (bot *Telebot) LeaveChat(chatID string) (bool, error) {
 // unbanChatMember
 // Use this method to unban a previously kicked user in a supergroup. The user will not return to the group automatically, but will be able to join via link, etc. The bot must be an administrator in the group for this to work. Returns True on success.
 //
-// Parameters	Type	Required	Description
 // chat_id	Integer or String	Yes	Unique identifier for the target group or username of the target supergroup (in the format @supergroupusername)
 // user_id	Integer	Yes	Unique identifier of the target user
 
 // getChat
 // Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
 //
-// Parameters	Type	Required	Description
 // chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
 
 // getChatAdministrators
 // Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
 //
-// Parameters	Type	Required	Description
 // chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
 
 // getChatMembersCount
 // Use this method to get the number of members in a chat. Returns Int on success.
 //
-// Parameters	Type	Required	Description
 // chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
 
 // getChatMember
 // Use this method to get information about a member of a chat. Returns a ChatMember object on success.
 //
-// Parameters	Type	Required	Description
 // chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
 // user_id	Integer	Yes	Unique identifier of the target user
 
@@ -452,7 +641,7 @@ func (bot *Telebot) LeaveChat(chatID string) (bool, error) {
 // Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
 //
 // Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via BotFather and accept the terms. Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
-// Parameters	Type	Required	Description
+//
 // callback_query_id	String	Yes	Unique identifier for the query to be answered
 // text	String	Optional	Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters
 // show_alert	Boolean	Optional	If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.

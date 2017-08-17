@@ -48,6 +48,7 @@ type GetUpdatesOpt struct {
 
 // SetWebhookOpt - options for SetWebhook
 type SetWebhookOpt struct {
+	URL            string   `json:"url"`
 	Certificate    string   `json:"certificate,omitempty"`
 	MaxConnections int      `json:"max_connections,omitempty"`
 	AllowedUpdates []string `json:"allowed_updates,omitempty"`
@@ -55,6 +56,7 @@ type SetWebhookOpt struct {
 
 // WebhookInfoOpt  - options for WebhookInfo
 type WebhookInfoOpt struct {
+	URL                  string   `json:"url"`
 	HasCustomCertificate bool     `json:"has_custom_certificate"`
 	PendingUpdateCount   int      `json:"pending_update_count"`
 	LastErrorDate        int      `json:"last_error_date,omitempty"`
@@ -92,4 +94,89 @@ type SendDocumentOpt struct {
 	//				or ReplyKeyboardMarkup	or to force a reply from the user.
 	//				or ReplyKeyboardRemove
 	//				or ForceReply
+}
+
+// SendVideoOpt - options for sendVideo
+type SendVideoOpt struct {
+	ChatID              string `json:"chat_id"`
+	Video               string `json:"video"`
+	Duration            int    `json:"duration,omitempty"`
+	Width               int    `json:"width,omitempty"`
+	Height              int    `json:"height,omitempty"`
+	Caption             string `json:"caption,omitempty"`
+	DisableNotification bool   `json:"disable_notification,omitempty"`
+	ReplyToMessageID    int    `json:"reply_to_message_id,omitempty"`
+	// reply_markup					Optional	Additional interface options. A JSON-serialized object for an inline keyboard,
+	//			InlineKeyboardMarkup 			custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+	//			or ReplyKeyboardMarkup
+	//			or ReplyKeyboardRemove
+	//			or ForceReply
+}
+
+// SendVoiceOpt - options for sendVoice
+type SendVoiceOpt struct {
+	ChatID              string `json:"chat_id"`
+	Voice               string `json:"voice"`
+	Caption             string `json:"caption,omitempty"`
+	Duration            int    `json:"duration,omitempty"`
+	DisableNotification bool   `json:"disable_notification,omitempty"`
+	ReplyToMessageID    int    `json:"reply_to_message_id,omitempty"`
+	// reply_markup					Optional	Additional interface options. A JSON-serialized object for an inline keyboard,
+	//			InlineKeyboardMarkup 			custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+	//			or ReplyKeyboardMarkup
+	//			or ReplyKeyboardRemove
+	//			or ForceReply
+}
+
+// SendVideoNoteOpt - options for sendVideo
+type SendVideoNoteOpt struct {
+	ChatID              string `json:"chat_id"`
+	VideoNote           string `json:"video_note"`
+	Duration            int    `json:"duration,omitempty"`
+	Length              int    `json:"length,omitempty"`
+	DisableNotification bool   `json:"disable_notification,omitempty"`
+	ReplyToMessageID    int    `json:"reply_to_message_id,omitempty"`
+	// reply_markup					Optional	Additional interface options. A JSON-serialized object for an inline keyboard,
+	//			InlineKeyboardMarkup 			custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+	//			or ReplyKeyboardMarkup
+	//			or ReplyKeyboardRemove
+	//			or ForceReply
+}
+
+// SendLocationOpt - option for sendLocation
+type SendLocationOpt struct {
+	ChatID              string  `json:"chat_id"`
+	Latitude            float64 `json:"latitude"`
+	Longitude           float64 `json:"longitude"`
+	DisableNotification bool    `json:"disable_notification,omitempty"`
+	ReplyToMessageID    int     `json:"reply_to_message_id,omitempty"`
+	// reply_markup		InlineKeyboardMarkup 	Additional interface options. A JSON-serialized object for an inline
+	//				or ReplyKeyboardMarkup 		keyboard, custom reply keyboard, instructions to remove reply keyboard
+	//				or ReplyKeyboardRemove 		or to force a reply from the user.
+	//				or ForceReply	Optional
+}
+
+// SendVenueOpt - option for SendVenue
+type SendVenueOpt struct {
+	ChatID              string  `json:"chat_id"`
+	Latitude            float64 `json:"latitude"`
+	Longitude           float64 `json:"longitude"`
+	Title               string  `json:"title"`
+	Address             string  `json:"address"`
+	FoursquareID        string  `json:"foursquare_id,omitempty"`
+	DisableNotification bool    `json:"disable_notification,omitempty"`
+	ReplyToMessageID    int     `json:"reply_to_message_id,omitempty"`
+	// reply_markup		InlineKeyboardMarkup 	Additional interface options. A JSON-serialized object for an inline
+	//				or ReplyKeyboardMarkup 		keyboard, custom reply keyboard, instructions to remove reply keyboard
+	//				or ReplyKeyboardRemove 		or to force a reply from the user.
+	//				or ForceReply	Optional
+}
+
+// ---------------------
+
+type SendGameOpt struct {
+	ChatID              string `json:"chat_id"`
+	GameShortName       string `json:"game_short_name"`
+	DisableNotification bool   `json:"disable_notification,omitempty"`
+	ReplyToMessageID    int    `json:"reply_to_message_id,omitempty"`
 }
