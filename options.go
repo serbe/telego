@@ -156,7 +156,7 @@ type SendLocationOpt struct {
 	//				or ForceReply	Optional
 }
 
-// SendVenueOpt - option for SendVenue
+// SendVenueOpt - options for SendVenue
 type SendVenueOpt struct {
 	ChatID              string  `json:"chat_id"`
 	Latitude            float64 `json:"latitude"`
@@ -174,6 +174,7 @@ type SendVenueOpt struct {
 
 // ---------------------
 
+// SendGameOpt - options for SendGame
 type SendGameOpt struct {
 	ChatID              string `json:"chat_id"`
 	GameShortName       string `json:"game_short_name"`

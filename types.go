@@ -248,8 +248,7 @@ type Voice struct {
 	FileSize int    `json:"file_size,omitempty"`
 }
 
-// VideoNote
-// This object represents a video message (available in Telegram apps as of v.4.0).
+// VideoNote - This object represents a video message (available in Telegram apps as of v.4.0).
 //
 // file_id	String	Unique identifier for this file
 // length	Integer	Video width and height as defined by sender

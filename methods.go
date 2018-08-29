@@ -188,8 +188,7 @@ func (bot *Bot) SendPhoto(opt *SendPhotoOpts) (Message, error) {
 	return message, err
 }
 
-// sendAudio
-// Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio
+// SendAudio - Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio
 // must be in the .mp3 format. On success, the sent Message is returned. Bots can currently send audio files of up
 // to 50 MB in size, this limit may be changed in the future.
 // For sending voice messages, use the sendVoice method instead.
@@ -250,8 +249,7 @@ func (bot *Bot) SendAudio(opt *SendAudioOpt) (Message, error) {
 	return message, err
 }
 
-// sendDocument
-// Use this method to send general files. On success, the sent Message is returned. Bots can currently send files
+// SendDocument - Use this method to send general files. On success, the sent Message is returned. Bots can currently send files
 // of any type of up to 50 MB in size, this limit may be changed in the future.
 //
 // chat_id		Integer 	Yes			Unique identifier for the target chat or username of the target channel
